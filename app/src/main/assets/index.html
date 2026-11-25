@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="app-version" content="202611251700">
+<meta name="app-version" content="202611251720">
+<meta name="theme-color" content="#2a4fe0">
 <title>Hablá Inglés</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
@@ -351,6 +352,22 @@ body{background:var(--bg)}
 .upd{position:fixed;left:10px;right:10px;bottom:84px;z-index:40;max-width:540px;margin:0 auto;display:flex;gap:10px;align-items:center;background:var(--surf);border:2px solid var(--blue);border-radius:20px;padding:10px 12px;box-shadow:0 14px 30px -10px rgba(31,63,176,.45);animation:enter .35s ease both}
 .upd .pico{width:52px;flex:none}.upd b{display:block;font:600 16px Fredoka,sans-serif}.upd span{font-size:13px;color:var(--mute);font-weight:700}
 .upd .go{width:auto;min-height:44px;padding:0 14px;font-size:14px;flex:none}.upd .x{width:36px;height:36px;font-size:18px;flex:none}
+
+.thm{width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.16);color:#fff;display:grid;place-items:center;flex:none}.thm svg{width:20px;height:20px}
+.seg{display:inline-flex;background:var(--card);border-radius:12px;padding:3px;gap:2px}
+.seg button{border:0;background:none;padding:8px 12px;border-radius:9px;font-weight:800;color:var(--mute);min-height:40px}
+.seg button.on{background:var(--surf);color:var(--blue);box-shadow:0 2px 0 var(--line)}
+.stats{grid-template-columns:1fr 1fr}
+.cal{background:var(--surf);border:2px solid var(--line);border-radius:18px;padding:14px}
+.calg{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;text-align:center}
+.calg b{font-size:12px;color:var(--mute)}
+.calg span{aspect-ratio:1;display:grid;place-items:center;border-radius:50%;font-weight:800;font-size:13px;color:var(--mute)}
+.calg span.on{background:color-mix(in srgb,#ff9f1c 18%,transparent)}.calg span.on svg{width:70%;height:70%}
+.calg span.today{outline:2px solid var(--blue)}
+:root[data-theme=dark] .fbi{background:#0d1230}
+:root[data-theme=dark] .nav{box-shadow:0 -6px 20px -12px rgba(0,0,0,.6)}
+.top{gap:8px;padding:10px 12px}.top .stat{padding:4px 8px 4px 5px}
+@media(max-width:400px){.top h1{font-size:0;gap:0}.top h1::before{font-size:16px}}
 </style>
 </head>
 <body>
@@ -538,6 +555,8 @@ const I={
  bolt:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>',
  crown:'<svg viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="#ffc531" stroke="#d99a00" stroke-width="1.2" stroke-linejoin="round"/><circle cx="12" cy="14" r="1.8" fill="#ff5a5f"/><rect x="5" y="17.5" width="14" height="2" fill="#d99a00"/></svg>',
  chat:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h12a3 3 0 013 3v6a3 3 0 01-3 3H9l-4 4v-4H4a3 3 0 01-3-3V7a3 3 0 013-3z"/><circle cx="7" cy="10" r="1.3" fill="#fff"/><circle cx="10.5" cy="10" r="1.3" fill="#fff"/><circle cx="14" cy="10" r="1.3" fill="#fff"/></svg>',
+ moon:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8.5 8.5 0 019.5 4a8.5 8.5 0 1010.5 10.5z"/></svg>',
+ sunI:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>',
  shopI:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 8h16l-1.5 12h-13zM8 8a4 4 0 018 0" stroke="currentColor" stroke-width="2" fill-opacity="1"/></svg>'
 };
 /* Pico, el hornero: mascota original de la app */
@@ -582,7 +601,7 @@ const app=document.getElementById("app");
 
 /* ================= ESTADO ================= */
 const DEF={done:0,xp:0,gems:100,streak:0,last:"",hearts:MAXH,hlast:0,todayXp:0,xday:"",week:"",weekXp:0,league:0,chests:0,perfect:0,stories:0,lessons:0,bestCombo:0,freeze:0,sound:true,ach:[],
- name:"",goal:20,talk:{},legend:{},rh:[],seen:{},diff:"auto",readQ:true,str:{},best:0,skin:"hornero",acc:"",owned:[],boost:0,onboard:false,hist:{},weak:[],weakF:[],qd:"",qp:{},qc:[]};
+ name:"",goal:20,theme:"auto",big:0,act:{},mins:0,talk:{},legend:{},rh:[],seen:{},diff:"auto",readQ:true,str:{},best:0,skin:"hornero",acc:"",owned:[],boost:0,onboard:false,hist:{},weak:[],weakF:[],qd:"",qp:{},qc:[]};
 let S=JSON.parse(JSON.stringify(DEF));
 try{const r=JSON.parse(localStorage.getItem("habla-ingles-2")||"null");if(r)S=Object.assign(S,r)}catch(e){}
 const save=()=>{try{localStorage.setItem("habla-ingles-2",JSON.stringify(S))}catch(e){}};
@@ -617,7 +636,7 @@ save();
 let AC;
 function tone(seq){if(!S.sound)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();let t=AC.currentTime;
  seq.forEach(([f,d,type])=>{const o=AC.createOscillator(),g=AC.createGain();o.type=type||"sine";o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.18,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(AC.destination);o.start(t);o.stop(t+d+.02);t+=d*.8})}catch(e){}}
-const SND={ok:()=>tone([[660,.12],[990,.2]]),bad:()=>{try{window.Android&&Android.vibrate(90)}catch(e){}tone([[200,.18,"square"],[150,.25,"square"]])},tap:()=>tone([[520,.05,"triangle"]]),
+const SND={ok:()=>{try{window.Android&&Android.vibrate(25)}catch(e){}tone([[660,.12],[990,.2]])},bad:()=>{try{window.Android&&Android.vibrate(90)}catch(e){}tone([[200,.18,"square"],[150,.25,"square"]])},tap:()=>tone([[520,.05,"triangle"]]),
  win:()=>tone([[523,.12],[659,.12],[784,.12],[1047,.3]]),chest:()=>tone([[392,.1],[523,.1],[784,.25,"triangle"]])};
 const HIGH=["Ana","Lucy","Mia","Kim","Eva","Lisa","Mom","Kid"];
 /* Voz: elige una voz en inglés, evita el error de Android (cancel + speak seguidos) y detecta si el navegador no tiene voz */
@@ -664,9 +683,17 @@ function checkAch(){const n=[];ACH.forEach(a=>{if(!S.ach.includes(a[0])&&a[4]()>
 
 /* ================= PANTALLAS ================= */
 let tab="learn";
+/* ===== tema claro / oscuro y tamaño de letra ===== */
+const mqDark=window.matchMedia?matchMedia("(prefers-color-scheme: dark)"):null;
+const isDark=()=>S.theme==="dark"||(S.theme==="auto"&&mqDark&&mqDark.matches);
+function applyTheme(){const r=document.documentElement;if(S.theme==="auto")r.removeAttribute("data-theme");else r.setAttribute("data-theme",S.theme);
+ document.body.style.zoom=S.big?"1.12":"";const m=document.querySelector('meta[name="theme-color"]');if(m)m.content=isDark()?"#0d1230":"#2a4fe0"}
+Object.keys(S.hist||{}).forEach(d=>{if(S.hist[d])S.act[d]=1});
+applyTheme();try{mqDark&&mqDark.addEventListener("change",()=>{if(S.theme==="auto")applyTheme()})}catch(e){}
+function markActive(xp){S.act[day()]=1;const ks=Object.keys(S.act);if(ks.length>150)delete S.act[ks[0]]}
 function topbar(){return `<div class="top"><h1>Hablá Inglés</h1>
  <span class="stat" title="Racha de días">${I.fire}${S.streak}</span><span class="stat" title="Gemas">${I.gem}${S.gems}</span>
- <button class="stat" id="hb" title="Vidas">${I.heart}${S.hearts}</button></div>`}
+ <button class="stat" id="hb" title="Vidas">${I.heart}${S.hearts}</button><button class="thm" id="thm" aria-label="${isDark()?"Modo claro":"Modo oscuro"}">${isDark()?I.sunI:I.moon}</button></div>`}
 const NI={
  home:'<svg viewBox="0 0 32 32"><path d="M5 15L16 5l11 10v12a2 2 0 01-2 2H7a2 2 0 01-2-2z" fill="#ffe0b3"/><path d="M3 16L16 4l13 12" fill="none" stroke="#ff7a3d" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><rect x="13" y="19" width="6" height="10" rx="1.5" fill="#c8743a"/><rect x="20" y="15" width="4" height="4" rx="1" fill="#7fd3ff"/></svg>',
  quest:'<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" fill="#ff5a5f"/><circle cx="16" cy="16" r="9" fill="#fff"/><circle cx="16" cy="16" r="5" fill="#ff5a5f"/><path d="M16 16l11-11M23 4l4 0 0 4" stroke="#1b2240" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>',
@@ -678,7 +705,8 @@ function nav(){const qd=quests().filter(q=>(S.qp[q[0]]||0)>=q[2]&&!S.qc.includes
  return `<nav class="nav"><div>${t.map(x=>`<button data-t="${x[0]}" class="${tab===x[0]?"on":""}">${x[2]}${x[1]}${x[0]==="quests"&&qd?`<em class="dot">${qd}</em>`:""}</button>`).join("")}</div></nav>`}
 function shell(inner){app.innerHTML=topbar()+`<div class="view">${inner}</div>`+nav();
  app.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{tab=b.dataset.t;SND.tap();show()});
- document.getElementById("hb").onclick=()=>{tab="shop";show()};window.scrollTo(0,0)}
+ document.getElementById("hb").onclick=()=>{tab="shop";show()};
+ document.getElementById("thm").onclick=()=>{S.theme=isDark()?"light":"dark";save();applyTheme();SND.tap();const y=scrollY;show();scrollTo(0,y)};window.scrollTo(0,0)}
 function show(){regen();if(!S.onboard)return onboard();({learn,quests:questsV,league,profile,shop,words,practice,talk})[tab]();if(notice){const m=notice;notice="";modal("Aviso",esc(m),"Entendido")}}
 
 function onboard(){
@@ -801,13 +829,19 @@ function league(){
  });
  shell(h+`<p class="foot">Liga simulada con jugadores de práctica (prototipo).</p></div>`);
 }
+function calendar(){const n=new Date(),y=n.getFullYear(),m=n.getMonth(),first=(new Date(y,m,1).getDay()+6)%7,len=new Date(y,m+1,0).getDate();
+ const MES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];let c=0,cells="";
+ for(let i=0;i<first;i++)cells+="<span></span>";
+ for(let d=1;d<=len;d++){const k=y+"-"+(m+1)+"-"+d,on=S.act[k],today=d===n.getDate();if(on)c++;cells+=`<span class="${on?"on":""}${today?" today":""}">${on?I.fire:d}</span>`}
+ return `<div class="cal"><p class="sub" style="margin:0 0 8px">${MES[m][0].toUpperCase()+MES[m].slice(1)} · practicaste ${c} día${c===1?"":"s"}</p><div class="calg">${"LMMJVSD".split("").map(x=>`<b>${x}</b>`).join("")}${cells}</div></div>`}
 function profile(){
  const days=[];for(let i=6;i>=0;i--){const d=new Date(Date.now()-i*864e5);days.push([day(i),"DLMMJVS"[d.getDay()],S.hist[day(i)]||0])}
  const mx=Math.max(S.goal,...days.map(d=>d[2]));
  const G=[[10,"Casual"],[20,"Normal"],[30,"En serio"],[50,"Intenso"]];
  let h=`<div class="page"><div style="display:flex;gap:14px;align-items:center;margin-bottom:16px"><span class="av" style="width:64px;height:64px;font-size:28px;background:var(--blue)">${esc((S.name||"V")[0].toUpperCase())}</span>
   <div><h2 style="margin:0">${esc(S.name||"Vos")}</h2><p class="sub" style="margin:0">Aprendiendo inglés · Liga ${LEAGUES[S.league][0]}</p></div></div>
-  <div class="stats"><div>${I.fire}<b>${S.streak}</b><small>días de racha</small></div><div>${I.star}<b>${S.xp}</b><small>XP total</small></div><div>${I.book}<b>${S.lessons}</b><small>lecciones</small></div><div>${I.medal}<b>${S.ach.length}</b><small>logros</small></div></div>
+  <div class="stats"><div>${I.fire}<b>${S.streak}</b><small>días de racha</small></div><div>${I.star}<b>${S.xp}</b><small>XP total</small></div><div>${I.book}<b>${S.lessons}</b><small>lecciones</small></div><div>${I.medal}<b>${S.ach.length}</b><small>logros</small></div><div>${I.bolt}<b>${S.mins}</b><small>minutos estudiados</small></div><div>${I.spk}<b>${known().length}</b><small>palabras aprendidas</small></div></div>
+  <h2 style="font-size:22px;margin-top:24px">Tu racha este mes</h2>${calendar()}
   <h2 style="font-size:22px;margin-top:24px">Tu nivel</h2>
   <div class="lvbox"><div><small>Nivel estimado</small><b>${cefr()[0]} · ${cefr()[1]}</b></div><div><small>Dificultad ${S.diff==="auto"?"automática":"elegida"}</small><b>${LVN[level()]}</b></div></div>
   ${skills().map(k=>`<div class="sk"><span>${k[0]}</span><div class="prog"><i style="width:${k[1]||0}%;background:${k[1]===null?"var(--line)":k[1]>=85?"var(--ok)":k[1]<65?"var(--coral)":"var(--sun)"}"></i></div><small>${k[1]===null?"—":k[1]+"%"}</small></div>`).join("")}
@@ -822,7 +856,9 @@ function profile(){
  ACH.forEach(a=>{const on=S.ach.includes(a[0]),v=Math.min(a[3],a[4]());
   h+=`<div class="badge"><span class="medal${on?"":" off"}" style="background:${a[5]}">${on?I.star:I.lock}</span><div style="flex:1"><b>${a[1]}</b><small>${a[2]}</small>
   <div class="prog"><i style="width:${(on?1:v/a[3])*100}%"></i></div></div><small>${on?"✓":v+"/"+a[3]}</small></div>`});
- h+=`<h2 style="margin-top:28px;font-size:22px">Ajustes</h2><div class="toggle">Efectos de sonido<button class="ghost" id="snd">${S.sound?"Activados":"Desactivados"}</button></div>
+ h+=`<h2 style="margin-top:28px;font-size:22px">Ajustes</h2><div class="toggle"><span>Tema</span><span class="seg">${[["auto","Auto"],["light","Claro"],["dark","Oscuro"]].map(t=>`<button class="${S.theme===t[0]?"on":""}" data-theme-set="${t[0]}">${t[1]}</button>`).join("")}</span></div>
+  <div class="toggle"><span>Tamaño de letra</span><span class="seg"><button class="${S.big?"":"on"}" data-big="0">Normal</button><button class="${S.big?"on":""}" data-big="1">Grande</button></span></div>
+  <div class="toggle">Efectos de sonido<button class="ghost" id="snd">${S.sound?"Activados":"Desactivados"}</button></div>
   <div class="toggle">Leer las preguntas en español<button class="ghost" id="rq">${S.readQ?"Activado":"Desactivado"}</button></div>
   <div class="toggle">Nombre<button class="ghost" id="ren">Cambiar</button></div>
   <div class="toggle"><span>Voces<small class="vinfo" id="vinfo">${window.Android?"Voz de Android en inglés y español":!TTS.ok?"Esta pantalla no tiene voz":"Inglés: "+(TTS.voice?esc(TTS.voice.name):"no instalada")+" · Español: "+(TTS.es?esc(TTS.es.name):"no instalada")}</small></span><button class="ghost" id="vtest">Probar voz</button></div>
@@ -830,6 +866,8 @@ function profile(){
  shell(h);
  app.querySelectorAll(".goals .tile").forEach(b=>b.onclick=()=>{S.goal=+b.dataset.g;save();SND.tap();profile()});
  document.getElementById("snd").onclick=()=>{S.sound=!S.sound;save();profile()};
+ app.querySelectorAll("[data-theme-set]").forEach(b=>b.onclick=()=>{S.theme=b.dataset.themeSet;save();applyTheme();const y=scrollY;profile();scrollTo(0,y)});
+ app.querySelectorAll("[data-big]").forEach(b=>b.onclick=()=>{S.big=+b.dataset.big;save();applyTheme();const y=scrollY;profile();scrollTo(0,y)});
  app.querySelectorAll("[data-diff]").forEach(b=>b.onclick=()=>{S.diff=b.dataset.diff;save();SND.tap();profile()});
  const ck=document.getElementById("updchk");if(ck)ck.onclick=()=>{try{Android.checkNow()}catch(e){}ck.textContent="Buscando…";setTimeout(()=>{if(!document.getElementById("upd"))ck.textContent="Ya tenés la última versión"},6000)};
  document.getElementById("plc").onclick=()=>modal("¿Hacer la prueba de nivel?","Son hasta 16 preguntas que se ponen cada vez más difíciles. Termina cuando te equivocás 3 veces. No gastás vidas y nunca te bloquea lo que ya desbloqueaste.","EMPEZAR",startPlace,true,pico(""));
@@ -921,7 +959,7 @@ function challenge(){
 }
 function chalEnd(score){
  const rec=score>S.best;if(rec)S.best=score;const xp=Math.min(20,score)*(Date.now()<S.boost?2:1);
- S.xp+=xp;S.todayXp+=xp;S.weekXp+=xp;S.hist[day()]=(S.hist[day()]||0)+xp;qadd("xp",xp);const na=checkAch();save();SND.win();if(rec&&score)confetti();
+ S.xp+=xp;S.todayXp+=xp;S.weekXp+=xp;S.hist[day()]=(S.hist[day()]||0)+xp;markActive();S.mins+=1;qadd("xp",xp);const na=checkAch();save();SND.win();if(rec&&score)confetti();
  app.innerHTML=`<div class="lesson"><div class="end">${pico(score>=10?"happy":"")}<h3>${rec&&score?"¡Nuevo récord!":"¡Se acabó el tiempo!"}</h3>
   <div class="chips"><div class="chip"><small>Pares</small>${score}</div><div class="chip"><small>Récord</small>${S.best}</div><div class="chip"><small>XP</small>+${xp}</div></div>
   ${na.map(a=>`<div class="newach">Logro desbloqueado: ${esc(a[1])} (+20 gemas)</div>`).join("")}
@@ -1146,7 +1184,7 @@ function startTalk(c){
    tk.lastElementChild.scrollIntoView({block:"nearest"})});
  };
  const endTalk=()=>{const stars=miss===0?3:miss<=2?2:1,prev=S.talk[c.id]||0;S.talk[c.id]=Math.max(prev,stars);
-  const xp=15*(Date.now()<S.boost?2:1);S.xp+=xp;S.todayXp+=xp;S.weekXp+=xp;S.gems+=5;S.hist[day()]=(S.hist[day()]||0)+xp;qadd("xp",xp);
+  const xp=15*(Date.now()<S.boost?2:1);S.xp+=xp;S.todayXp+=xp;S.weekXp+=xp;S.gems+=5;markActive();S.mins+=2;S.hist[day()]=(S.hist[day()]||0)+xp;qadd("xp",xp);
   const na=checkAch();save();SND.win();confetti();
   app.innerHTML=`<div class="lesson"><div class="end"><div class="burst"><div class="rays"></div>${pico("happy")}</div><h3>¡Charla completa!</h3>
    <div class="stars big">${[1,2,3].map(i=>`<i class="${i<=stars?"on":""}">${I.star}</i>`).join("")}</div>
@@ -1304,7 +1342,7 @@ function finish(){
  const prac=!!L.prac,legend=L.legend!==undefined,review=L.gi===-1,story=!prac&&!review&&NODES[L.gi%NPU]==="story",perfect=L.miss===0,before=S.todayXp;
  const dbl=Date.now()<S.boost,xp=((L.test!==undefined?25:story?15:10)+(perfect?5:0)+(L.best>=8?3:0))*(dbl?2:1),gems=5+(perfect?5:0);
  const acc=Math.round(L.total/(L.total+L.miss)*100),secs=Math.round((Date.now()-L.t0)/1000);
- S.xp+=xp;S.todayXp+=xp;S.weekXp+=xp;S.gems+=gems;S.lessons++;if(perfect)S.perfect++;if(story)S.stories++;S.bestCombo=Math.max(S.bestCombo,L.best);
+ S.xp+=xp;S.todayXp+=xp;S.weekXp+=xp;S.gems+=gems;S.lessons++;markActive();S.mins+=Math.max(1,Math.round(secs/60));if(perfect)S.perfect++;if(story)S.stories++;S.bestCombo=Math.max(S.bestCombo,L.best);
  const wasNew=S.last!==day();if(wasNew){S.streak=(S.last===day(1)?S.streak:0)+1;S.last=day()}
  let extra="";
  if(legend){if(!S.legend[L.legend]){S.legend[L.legend]=1;S.gems+=40;extra="¡Unidad coronada! +40 gemas"}}
