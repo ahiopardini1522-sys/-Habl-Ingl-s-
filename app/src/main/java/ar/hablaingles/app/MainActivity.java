@@ -4,7 +4,9 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -40,7 +42,7 @@ public class MainActivity extends Activity {
        El contenido de la app (index.html) se descarga de GitHub cada vez que se abre.
        Si hay una versión más nueva, se guarda en el celular y se ofrece «Actualizar».
        NATIVE_VERSION se sube solo cuando cambia este código Java: ahí la app avisa que hay un APK nuevo. */
-    private static final int NATIVE_VERSION = 1;
+    private static final int NATIVE_VERSION = 2;
     private static final String REPO = "ahiopardini1522-sys/-Habl-Ingl-s-";
     private static final String RAW = "https://raw.githubusercontent.com/" + REPO + "/main/";
     private static final String HTML_URL = RAW + "app/src/main/assets/index.html";
@@ -53,6 +55,7 @@ public class MainActivity extends Activity {
     private boolean ttsReady = false;
     private SpeechRecognizer recognizer;
     private static final int REQ_MIC = 7;
+    private static final int REQ_NOTIF = 8;
     private final Locale EN = Locale.US;
     private Locale es = new Locale("es", "AR");
     private long loadedVersion = 0;
@@ -211,6 +214,44 @@ public class MainActivity extends Activity {
             });
         }
 
+        /* ----- tema del sistema y barras ----- */
+        @JavascriptInterface
+        public boolean systemDark() {
+            return (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+        }
+
+        @JavascriptInterface
+        public void setBars(boolean dark) {
+            runOnUiThread(() -> {
+                getWindow().setStatusBarColor(Color.parseColor(dark ? "#0D1230" : "#2A4FE0"));
+                getWindow().setNavigationBarColor(Color.parseColor(dark ? "#161D48" : "#F4F7FF"));
+                web.setBackgroundColor(Color.parseColor(dark ? "#0D1230" : "#F4F7FF"));
+                View d = getWindow().getDecorView();
+                int f = d.getSystemUiVisibility();
+                if (Build.VERSION.SDK_INT >= 26) {
+                    if (dark) f &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR; else f |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+                }
+                d.setSystemUiVisibility(f);
+            });
+        }
+
+        /* ----- recordatorio diario ----- */
+        @JavascriptInterface
+        public void setReminder(boolean on, int hour, int minute) {
+            SharedPreferences p = getSharedPreferences(ReminderReceiver.PREFS, MODE_PRIVATE);
+            p.edit().putBoolean("on", on).putInt("h", hour).putInt("m", minute).apply();
+            if (on && Build.VERSION.SDK_INT >= 33
+                    && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                runOnUiThread(() -> requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQ_NOTIF));
+            }
+            ReminderReceiver.schedule(MainActivity.this);
+        }
+
+        @JavascriptInterface
+        public void markPracticed(String day) {
+            getSharedPreferences(ReminderReceiver.PREFS, MODE_PRIVATE).edit().putString("practiced", day).apply();
+        }
+
         @JavascriptInterface
         public void vibrate(int ms) {
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -268,6 +309,9 @@ public class MainActivity extends Activity {
         if (code == REQ_MIC) {
             if (res.length > 0 && res[0] == PackageManager.PERMISSION_GRANTED) startListening();
             else speechError("Sin permiso de micrófono. Activalo en Ajustes > Apps > Hablá Inglés.");
+        }
+        if (code == REQ_NOTIF && (res.length == 0 || res[0] != PackageManager.PERMISSION_GRANTED)) {
+            js("window.__notifDenied&&window.__notifDenied()");
         }
     }
 

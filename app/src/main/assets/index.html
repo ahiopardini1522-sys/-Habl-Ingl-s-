@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="app-version" content="202611251720">
+<meta name="app-version" content="202611251745">
 <meta name="theme-color" content="#2a4fe0">
 <title>Hablá Inglés</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -368,6 +368,15 @@ body{background:var(--bg)}
 :root[data-theme=dark] .nav{box-shadow:0 -6px 20px -12px rgba(0,0,0,.6)}
 .top{gap:8px;padding:10px 12px}.top .stat{padding:4px 8px 4px 5px}
 @media(max-width:400px){.top h1{font-size:0;gap:0}.top h1::before{font-size:16px}}
+
+.fcard{display:block;width:100%;height:300px;border:0;background:none;padding:0;perspective:1000px;margin-top:6px}
+.fin{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fcard.flip .fin{transform:rotateY(180deg)}
+.ff,.fb2{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:2px solid var(--line);box-shadow:0 6px 0 var(--line)}
+.ff{background:var(--surf)}.fb2{background:linear-gradient(135deg,#8a5cf0,#2f5bea);color:#fff;transform:rotateY(180deg);border-color:transparent;box-shadow:0 6px 0 #1f3fb0}
+.ff .emo{font-size:84px;line-height:1}.ff b,.fb2 b{font:700 36px Fredoka,sans-serif}.ff small{color:var(--mute);font-weight:800}.fb2 small{opacity:.85;font-weight:800;font-size:16px}
+.fbtns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}.fbtns .go{font-size:15px}
+@media(prefers-reduced-motion:reduce){.fin{transition:none}}
 </style>
 </head>
 <body>
@@ -601,7 +610,7 @@ const app=document.getElementById("app");
 
 /* ================= ESTADO ================= */
 const DEF={done:0,xp:0,gems:100,streak:0,last:"",hearts:MAXH,hlast:0,todayXp:0,xday:"",week:"",weekXp:0,league:0,chests:0,perfect:0,stories:0,lessons:0,bestCombo:0,freeze:0,sound:true,ach:[],
- name:"",goal:20,theme:"auto",big:0,act:{},mins:0,talk:{},legend:{},rh:[],seen:{},diff:"auto",readQ:true,str:{},best:0,skin:"hornero",acc:"",owned:[],boost:0,onboard:false,hist:{},weak:[],weakF:[],qd:"",qp:{},qc:[]};
+ name:"",goal:20,rem:{on:0,h:19},theme:"auto",big:0,act:{},mins:0,talk:{},legend:{},rh:[],seen:{},diff:"auto",readQ:true,str:{},best:0,skin:"hornero",acc:"",owned:[],boost:0,onboard:false,hist:{},weak:[],weakF:[],qd:"",qp:{},qc:[]};
 let S=JSON.parse(JSON.stringify(DEF));
 try{const r=JSON.parse(localStorage.getItem("habla-ingles-2")||"null");if(r)S=Object.assign(S,r)}catch(e){}
 const save=()=>{try{localStorage.setItem("habla-ingles-2",JSON.stringify(S))}catch(e){}};
@@ -685,12 +694,18 @@ function checkAch(){const n=[];ACH.forEach(a=>{if(!S.ach.includes(a[0])&&a[4]()>
 let tab="learn";
 /* ===== tema claro / oscuro y tamaño de letra ===== */
 const mqDark=window.matchMedia?matchMedia("(prefers-color-scheme: dark)"):null;
-const isDark=()=>S.theme==="dark"||(S.theme==="auto"&&mqDark&&mqDark.matches);
-function applyTheme(){const r=document.documentElement;if(S.theme==="auto")r.removeAttribute("data-theme");else r.setAttribute("data-theme",S.theme);
+const isDark=()=>S.theme==="dark"||(S.theme==="auto"&&(window.Android&&typeof Android.systemDark==="function"?Android.systemDark():mqDark&&mqDark.matches));
+const AND=n=>!!(window.Android&&typeof Android[n]==="function");
+function applyTheme(){const r=document.documentElement;
+ if(S.theme==="auto"&&AND("systemDark"))r.setAttribute("data-theme",Android.systemDark()?"dark":"light");
+ else if(S.theme==="auto")r.removeAttribute("data-theme");else r.setAttribute("data-theme",S.theme);
+ if(AND("setBars"))try{Android.setBars(isDark())}catch(e){}
  document.body.style.zoom=S.big?"1.12":"";const m=document.querySelector('meta[name="theme-color"]');if(m)m.content=isDark()?"#0d1230":"#2a4fe0"}
 Object.keys(S.hist||{}).forEach(d=>{if(S.hist[d])S.act[d]=1});
+setTimeout(()=>{if(AND("setReminder")&&S.rem.on)try{Android.setReminder(true,S.rem.h,0)}catch(e){}if(AND("markPracticed")&&S.act[day()])try{Android.markPracticed(day())}catch(e){}},800);
+window.__notifDenied=()=>modal("Notificaciones desactivadas","Para recibir el recordatorio, activá las notificaciones en Ajustes del celular → Apps → Hablá Inglés → Notificaciones.","Entendido",null,false,pico("sad"));
 applyTheme();try{mqDark&&mqDark.addEventListener("change",()=>{if(S.theme==="auto")applyTheme()})}catch(e){}
-function markActive(xp){S.act[day()]=1;const ks=Object.keys(S.act);if(ks.length>150)delete S.act[ks[0]]}
+function markActive(xp){S.act[day()]=1;if(AND("markPracticed"))try{Android.markPracticed(day())}catch(e){}const ks=Object.keys(S.act);if(ks.length>150)delete S.act[ks[0]]}
 function topbar(){return `<div class="top"><h1>Hablá Inglés</h1>
  <span class="stat" title="Racha de días">${I.fire}${S.streak}</span><span class="stat" title="Gemas">${I.gem}${S.gems}</span>
  <button class="stat" id="hb" title="Vidas">${I.heart}${S.hearts}</button><button class="thm" id="thm" aria-label="${isDark()?"Modo claro":"Modo oscuro"}">${isDark()?I.sunI:I.moon}</button></div>`}
@@ -857,6 +872,7 @@ function profile(){
   h+=`<div class="badge"><span class="medal${on?"":" off"}" style="background:${a[5]}">${on?I.star:I.lock}</span><div style="flex:1"><b>${a[1]}</b><small>${a[2]}</small>
   <div class="prog"><i style="width:${(on?1:v/a[3])*100}%"></i></div></div><small>${on?"✓":v+"/"+a[3]}</small></div>`});
  h+=`<h2 style="margin-top:28px;font-size:22px">Ajustes</h2><div class="toggle"><span>Tema</span><span class="seg">${[["auto","Auto"],["light","Claro"],["dark","Oscuro"]].map(t=>`<button class="${S.theme===t[0]?"on":""}" data-theme-set="${t[0]}">${t[1]}</button>`).join("")}</span></div>
+  ${AND("setReminder")?`<div class="toggle" style="flex-wrap:wrap;gap:8px"><span>Recordatorio diario<small class="vinfo">${S.rem.on?`Te aviso a las ${S.rem.h}:00 si todavía no practicaste`:"Desactivado"}</small></span><span class="seg">${[[0,"No"],[9,"9:00"],[13,"13:00"],[19,"19:00"],[21,"21:00"]].map(o=>`<button class="${(o[0]===0?!S.rem.on:S.rem.on&&S.rem.h===o[0])?"on":""}" data-rem="${o[0]}">${o[1]}</button>`).join("")}</span></div>`:""}
   <div class="toggle"><span>Tamaño de letra</span><span class="seg"><button class="${S.big?"":"on"}" data-big="0">Normal</button><button class="${S.big?"on":""}" data-big="1">Grande</button></span></div>
   <div class="toggle">Efectos de sonido<button class="ghost" id="snd">${S.sound?"Activados":"Desactivados"}</button></div>
   <div class="toggle">Leer las preguntas en español<button class="ghost" id="rq">${S.readQ?"Activado":"Desactivado"}</button></div>
@@ -867,6 +883,7 @@ function profile(){
  app.querySelectorAll(".goals .tile").forEach(b=>b.onclick=()=>{S.goal=+b.dataset.g;save();SND.tap();profile()});
  document.getElementById("snd").onclick=()=>{S.sound=!S.sound;save();profile()};
  app.querySelectorAll("[data-theme-set]").forEach(b=>b.onclick=()=>{S.theme=b.dataset.themeSet;save();applyTheme();const y=scrollY;profile();scrollTo(0,y)});
+ app.querySelectorAll("[data-rem]").forEach(b=>b.onclick=()=>{const h=+b.dataset.rem;S.rem=h?{on:1,h}:{on:0,h:S.rem.h};save();try{Android.setReminder(!!h,S.rem.h,0)}catch(e){}SND.tap();const y=scrollY;profile();scrollTo(0,y)});
  app.querySelectorAll("[data-big]").forEach(b=>b.onclick=()=>{S.big=+b.dataset.big;save();applyTheme();const y=scrollY;profile();scrollTo(0,y)});
  app.querySelectorAll("[data-diff]").forEach(b=>b.onclick=()=>{S.diff=b.dataset.diff;save();SND.tap();profile()});
  const ck=document.getElementById("updchk");if(ck)ck.onclick=()=>{try{Android.checkNow()}catch(e){}ck.textContent="Buscando…";setTimeout(()=>{if(!document.getElementById("upd"))ck.textContent="Ya tenés la última versión"},6000)};
@@ -913,6 +930,7 @@ let wq="";
 function words(){
  const all=unlockedW(),k=known().length;
  let h=`<div class="page"><button class="ghost" id="back" style="margin-bottom:12px">← Volver</button><h2>Mis palabras</h2><p class="sub">${k} de ${all.length} palabras aprendidas. Tocá una para escucharla.</p>
+  <button class="review" id="flash" style="margin:0 0 14px;width:100%"><span class="ic" style="background:#e0457b">${I.book}</span><span><b>Tarjetas de repaso</b><small>Dalas vuelta y fijate si te acordás</small></span></button>
   <input class="inp" id="q" style="min-height:0;margin-bottom:12px" placeholder="Buscar en inglés o español…" value="${esc(wq)}" autocomplete="off"><div id="wl"></div></div>`;
  shell(h);
  const draw=()=>{const q=norm(wq);let cur=-1,o="";
@@ -925,6 +943,23 @@ function words(){
  draw();
  const qi=document.getElementById("q");qi.oninput=()=>{wq=qi.value;draw()};
  document.getElementById("back").onclick=()=>{tab="learn";show()};
+ document.getElementById("flash").onclick=()=>{SND.tap();flash()};
+}
+function flash(){
+ const deck=unlockedW().map(w=>[w,(S.str[w[0]]||0)+Math.random()*2]).sort((a,b)=>a[1]-b[1]).slice(0,15).map(x=>x[0]);let i=0,ok=0;
+ const draw=()=>{if(i>=deck.length)return end();const w=deck[i];
+  app.innerHTML=`<div class="lesson"><div class="lhead"><button class="x" id="quit" aria-label="Salir">✕</button><div class="bar"><i style="width:${i/deck.length*100}%"></i></div><span class="stat">${i+1}/${deck.length}</span></div>
+   <div class="body"><h3>¿Te acordás qué significa?</h3><button class="fcard" id="fc"><div class="fin"><div class="ff">${EMO[w[0]]?`<span class="emo">${EMO[w[0]]}</span>`:""}<b>${esc(w[0])}</b><small>Tocá para dar vuelta</small></div><div class="fb2"><b>${esc(w[1])}</b><small>${esc(w[0])}</small></div></div></button>
+   <div class="fbtns" id="fbt" hidden><button class="go" id="no" style="background:var(--coral);box-shadow:0 5px 0 #c03a3e">NO LA SABÍA</button><button class="go" id="si" style="background:var(--ok);box-shadow:0 5px 0 #146b3a">¡LA SABÍA!</button></div></div></div>`;
+  speak(w[0]);document.getElementById("quit").onclick=()=>{tab="words";show()};
+  document.getElementById("fc").onclick=ev=>{const c=ev.currentTarget;if(c.classList.contains("flip"))return;c.classList.add("flip");speakEs(w[1]);document.getElementById("fbt").hidden=false};
+  document.getElementById("si").onclick=()=>{bump(w[0],true);ok++;SND.ok();i++;save();draw()};
+  document.getElementById("no").onclick=()=>{bump(w[0],false);SND.tap();i++;save();draw()}};
+ const end=()=>{const xp=5;S.xp+=xp;S.todayXp+=xp;S.weekXp+=xp;S.hist[day()]=(S.hist[day()]||0)+xp;markActive();qadd("xp",xp);save();SND.win();
+  app.innerHTML=`<div class="lesson"><div class="end"><div class="burst"><div class="rays"></div>${pico("happy")}</div><h3>¡Repaso terminado!</h3><p>Te acordaste de <b>${ok}</b> de ${deck.length} palabras. Las que no sabías van a aparecer más seguido.</p>
+   <div class="chips"><div class="chip"><small>XP</small>+${xp}</div></div><button class="go" id="again" style="max-width:320px">OTRA RONDA</button><button class="go" id="h" style="max-width:320px;margin-top:10px;background:var(--line);color:var(--ink);box-shadow:none">VOLVER</button></div></div>`;
+  document.getElementById("again").onclick=flash;document.getElementById("h").onclick=()=>{tab="words";show()}};
+ draw();
 }
 
 /* ================= DESAFÍO RELÁMPAGO ================= */
