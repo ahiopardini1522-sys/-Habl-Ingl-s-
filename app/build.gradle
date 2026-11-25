@@ -1,0 +1,24 @@
+plugins { id 'com.android.application' }
+android {
+    namespace 'ar.hablaingles.app'
+    compileSdk 34
+    defaultConfig {
+        applicationId 'ar.hablaingles.app'
+        minSdk 24
+        targetSdk 34
+        versionCode((System.getenv('GITHUB_RUN_NUMBER') ?: '1') as Integer)
+        versionName "1.0.${System.getenv('GITHUB_RUN_NUMBER') ?: '0'}"
+    }
+    signingConfigs {
+        fija {
+            storeFile file('habla-debug.keystore')
+            storePassword 'android'
+            keyAlias 'habladebug'
+            keyPassword 'android'
+        }
+    }
+    buildTypes {
+        debug { signingConfig signingConfigs.fija }
+    }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
