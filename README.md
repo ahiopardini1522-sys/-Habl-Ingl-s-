@@ -6,6 +6,8 @@ App Android para aprender inglés desde el español, estilo Duolingo, con Pico e
 - Palabras nuevas con dibujo, ejercicios con imágenes, armar frases, dictados, hablar y conversaciones con personajes.
 - Prueba de nivel y dificultad que se adapta sola.
 - Voz nativa de Android en inglés y en español, y micrófono para practicar pronunciación.
+- Curso de portugués (8 unidades) además del de inglés, con voz y micrófono en portugués.
+- Widget para la pantalla de inicio con la racha y la palabra del día.
 - Recordatorio diario con notificación y modo oscuro que sigue al celular.
 - Rachas, misiones diarias, liga semanal, logros, tienda y Pico personalizable.
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="app-version" content="202611251830">
+<meta name="app-version" content="202611251915">
 <meta name="theme-color" content="#2a4fe0">
 <title>Hablá Inglés</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -407,6 +407,9 @@ body{background:var(--bg)}
 .sc.s{background:var(--sun);color:#5a3d00}.sc.f{background:var(--ok);color:#fff}
 .slist{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;justify-content:center}.slist span{background:var(--surf);border:2px solid var(--line);border-radius:99px;padding:6px 12px;font-weight:800}
 .slist span.ok{border-color:var(--ok);color:var(--ok)}
+
+.crs-chip{margin-top:8px;border:0;border-radius:99px;background:rgba(255,255,255,.2);color:#fff;font-weight:800;padding:6px 12px;min-height:36px}
+.opt.crs{gap:14px}
 </style>
 </head>
 <body>
@@ -414,7 +417,7 @@ body{background:var(--bg)}
 <script>
 {
 /* ================= CONTENIDO: 10 unidades ================= */
-const U=[
+let U=[
 {n:"Saludos",sub:"Presentate y saludá",c:"#2f5bea",d:"#1f3fb0",
  w:[["hello","hola"],["goodbye","adiós"],["please","por favor"],["thank you","gracias"],["yes","sí"],["sorry","perdón"],["good morning","buenos días"],["good night","buenas noches"],["friend","amigo"],["name","nombre"]],
  f:[["hello my friend","Hola, mi amigo"],["my name is Ana","Mi nombre es Ana"],["thank you very much","Muchas gracias"],["yes please","Sí, por favor"],["good morning my friend","Buenos días, mi amigo"],["nice to meet you","Mucho gusto"]],
@@ -566,8 +569,9 @@ const U=[
  st:{p:["Ben","Lucy"],l:[["I think phones are bad for kids.","Creo que los celulares son malos para los chicos."],["I disagree. They can help them learn.","No estoy de acuerdo. Los pueden ayudar a aprender."],["However, they use them too much.","Sin embargo, los usan demasiado."],["That's true. We need rules.","Es verdad. Necesitamos reglas."]],
   q:[["¿Qué piensa Ben de los celulares?","They are bad for kids",["They are bad for kids","They are great","They are expensive","They are boring"]],["¿En qué terminan de acuerdo?","They need rules",["They need rules","Phones are useless","Kids should have two phones","Nothing"]]]}}
 ];
-const NODES=["lesson","lesson","story","lesson","chest"],NPU=NODES.length,TOTAL=U.length*NPU,MAXH=5;
-const TIPS=[
+const UEN=U;
+const NODES=["lesson","lesson","story","lesson","chest"],NPU=NODES.length,MAXH=5;let TOTAL=U.length*NPU;
+let TIPS=[
  ["Para presentarte decí «My name is…» o «I am…». «I am» significa «yo soy» y también «yo estoy».",["Nice to meet you","Good morning"]],
  ["Usá «a» antes de consonante (a coffee) y «an» antes de vocal (an apple). Para pedir más amable: «I would like…».",["I would like a coffee","An apple, please"]],
  ["«I have» es «tengo», pero con he/she se dice «has»: «my sister has a cat». «my» no cambia: my mother, my father.",["I have a dog","She has a cat"]],
@@ -714,13 +718,14 @@ const TTS={es:null,ok:typeof window.speechSynthesis!=="undefined"&&typeof window
 function loadVoices(){if(!TTS.ok)return;try{const v=speechSynthesis.getVoices()||[];TTS.n=v.length;
  TTS.voice=v.find(x=>/^en[-_]US/i.test(x.lang)&&/google/i.test(x.name))||v.find(x=>/^en[-_]US/i.test(x.lang))||v.find(x=>/^en/i.test(x.lang))||null;
  const es=v.filter(x=>/^es/i.test(x.lang)),pr=["es-AR","es-419","es-US","es-MX","es-ES"];
+ TTS.pt=v.find(x=>/^pt[-_]BR/i.test(x.lang))||v.find(x=>/^pt/i.test(x.lang))||null;
  TTS.es=pr.map(l=>es.find(x=>x.lang.replace("_","-")===l&&/google/i.test(x.name))||es.find(x=>x.lang.replace("_","-")===l)).find(Boolean)||es[0]||null}catch(e){}}
 if(TTS.ok){loadVoices();try{speechSynthesis.addEventListener("voiceschanged",loadVoices)}catch(e){}}
-function mkU(t,lang,slow,who){const es=lang==="es",v=es?TTS.es:TTS.voice,u=new SpeechSynthesisUtterance(t);
- u.lang=v?v.lang:(es?"es-ES":"en-US");if(v)u.voice=v;u.rate=slow?.55:es?1:.9;u.volume=1;if(who)u.pitch=HIGH.includes(who)?1.35:.75;return u}
+function mkU(t,lang,slow,who){const es=lang==="es",pt=!es&&PT(),v=es?TTS.es:pt?TTS.pt:TTS.voice,u=new SpeechSynthesisUtterance(t);
+ u.lang=v?v.lang:(es?"es-ES":pt?"pt-BR":"en-US");if(v)u.voice=v;u.rate=slow?.55:es?1:.9;u.volume=1;if(who)u.pitch=HIGH.includes(who)?1.35:.75;return u}
 /* say([[texto,"en"|"es",lento,personaje],...]): lee en orden, cada parte con la voz de su idioma */
 function say(list){
- if(window.Android&&Android.speak){try{Android.stop();list.filter(x=>x&&x[0]).forEach(x=>{const es=x[1]==="es";Android.speak(String(x[0]),es?"es":"en",x[3]?(HIGH.includes(x[3])?1.35:.8):1,x[2]?.55:es?1:.9)});TTS.works=true}catch(e){}return}
+ if(window.Android&&Android.speak){try{Android.stop();list.filter(x=>x&&x[0]).forEach(x=>{const es=x[1]==="es";Android.speak(String(x[0]),es?"es":TL(),x[3]?(HIGH.includes(x[3])?1.35:.8):1,x[2]?.55:es?1:.9)});TTS.works=true}catch(e){}return}
  if(!TTS.ok){TTS.works=false;noVoice();return}
  try{
   const us=list.filter(x=>x&&x[0]).map(x=>mkU(x[0],x[1]||"en",x[2],x[3]));if(!us.length)return;
@@ -799,7 +804,7 @@ function onboard(){
  document.getElementById("st").onclick=()=>{S.name=document.getElementById("nm").value.trim().slice(0,20);S.goal=goal;S.onboard=true;save();SND.win();if(kn)return startPlace();tab="learn";show()};
 }
 
-const UE=["👋","🍎","🏡","🚆","👕","⏰","🌅","🏫","🩺","📜","🛍️","🌦️","🛋️","😊","🚀","📱","🦁","⚽","🍽️","🌳","❓","⏳","📏","💬","🏝️","🕰️","🔀","🧩","💼","🗣️"];
+let UE=["👋","🍎","🏡","🚆","👕","⏰","🌅","🏫","🩺","📜","🛍️","🌦️","🛋️","😊","🚀","📱","🦁","⚽","🍽️","🌳","❓","⏳","📏","💬","🏝️","🕰️","🔀","🧩","💼","🗣️"];
 function deco(ui,u){const c=u.c,v=ui%4;
  const tree=`<svg viewBox="0 0 80 100"><ellipse cx="40" cy="96" rx="26" ry="4" fill="#000" opacity=".08"/><rect x="36" y="58" width="8" height="38" rx="3" fill="#a5714a"/><circle cx="40" cy="44" r="26" fill="${c}" opacity=".85"/><circle cx="28" cy="52" r="16" fill="${c}"/><circle cx="54" cy="54" r="14" fill="${c}" opacity=".9"/><circle cx="32" cy="34" r="8" fill="#fff" opacity=".25"/></svg>`;
  const sun=`<svg viewBox="0 0 80 100"><circle cx="40" cy="36" r="20" fill="#ffc531"/><g stroke="#ffc531" stroke-width="4" stroke-linecap="round">${[0,45,90,135,180,225,270,315].map(a=>`<path d="M${40+28*Math.cos(a*Math.PI/180)} ${36+28*Math.sin(a*Math.PI/180)}l${6*Math.cos(a*Math.PI/180)} ${6*Math.sin(a*Math.PI/180)}"/>`).join("")}</g><ellipse cx="36" cy="80" rx="30" ry="11" fill="${c}" opacity=".35"/><ellipse cx="52" cy="74" rx="20" ry="10" fill="${c}" opacity=".35"/></svg>`;
@@ -817,20 +822,22 @@ const trailRO=new ResizeObserver(()=>{if(tab==="learn"&&document.querySelector("
 function face(n){const h=h32(n),skin=["#f2c9a0","#e0a878","#c68a5e","#8d5a3b","#f5d5b8"][h%5],hair=["#2b1a0e","#6b3a17","#d9a441","#1b2240","#a33"][(h>>3)%5],long=HIGH.includes(n);
  return `<svg class="face" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="hsl(${h%360} 70% 88%)"/>${long?`<path d="M8 22q0-16 12-16t12 16v12H8z" fill="${hair}"/>`:""}<circle cx="20" cy="22" r="11" fill="${skin}"/>
  <path d="M9 19q2-11 11-11t11 11q-5-5-11-5t-11 5z" fill="${hair}"/><circle cx="16" cy="23" r="1.6" fill="#2b1a0e"/><circle cx="24" cy="23" r="1.6" fill="#2b1a0e"/><path d="M16.5 27.5q3.5 3 7 0" stroke="#2b1a0e" stroke-width="1.6" fill="none" stroke-linecap="round"/><circle cx="13.5" cy="26" r="1.8" fill="#ff8a8a" opacity=".5"/><circle cx="26.5" cy="26" r="1.8" fill="#ff8a8a" opacity=".5"/></svg>`}
+function wodWord(){const pool=U.slice(0,curUnit()+1).flatMap(u=>u.w).filter(w=>EMO[w[0]]);return pool[h32(day()+(S.course||""))%pool.length]}
 function learn(){
  const G=S.goal,g=Math.min(100,S.todayXp/G*100),hi=S.name?", "+S.name:"";
  const msg=S.done>=TOTAL?"¡Terminaste el curso! Repasá cuando quieras.":S.todayXp>=G?"¡Cumpliste la meta de hoy"+hi+"! Seguí sumando.":S.todayXp?"¡Vas bien"+hi+"! Un poquito más.":"¡Hola"+hi+"! Hagamos una lección.";
  const nw=S.weak.length+S.weakF.length;
- let h=`<div class="hero"><svg class="clouds" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true"><g fill="#fff" opacity=".13"><ellipse cx="60" cy="30" rx="46" ry="16"/><ellipse cx="95" cy="22" rx="30" ry="14"/><ellipse cx="330" cy="88" rx="56" ry="18"/><ellipse cx="365" cy="78" rx="32" ry="15"/><circle cx="250" cy="18" r="3"/><circle cx="180" cy="100" r="2.5"/><circle cx="20" cy="95" r="2"/></g></svg>${pico(S.todayXp>=G?"happy":"")}<div style="flex:1"><b>Meta diaria: ${Math.min(S.todayXp,G)}/${G} XP</b><p>${esc(msg)}${Date.now()<S.boost?` · XP doble activo`:""}</p><div class="goal"><i style="width:${g}%"></i></div></div></div>
-  ${(()=>{const pool=U.slice(0,curUnit()+1).flatMap(u=>u.w).filter(w=>EMO[w[0]]);const w=pool[h32(day())%pool.length];
+ let h=`<div class="hero"><svg class="clouds" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true"><g fill="#fff" opacity=".13"><ellipse cx="60" cy="30" rx="46" ry="16"/><ellipse cx="95" cy="22" rx="30" ry="14"/><ellipse cx="330" cy="88" rx="56" ry="18"/><ellipse cx="365" cy="78" rx="32" ry="15"/><circle cx="250" cy="18" r="3"/><circle cx="180" cy="100" r="2.5"/><circle cx="20" cy="95" r="2"/></g></svg>${pico(S.todayXp>=G?"happy":"")}<div style="flex:1"><b>Meta diaria: ${Math.min(S.todayXp,G)}/${G} XP</b><p>${esc(msg)}${Date.now()<S.boost?` · XP doble activo`:""}</p><button class="crs-chip" id="crs">${PT()?"🇧🇷 Portugués":"🇺🇸 Inglés"} ▾</button><div class="goal"><i style="width:${g}%"></i></div></div></div>
+  ${(()=>{const w=wodWord();
    return `<div class="wod"><span class="wemo">${EMO[w[0]]}</span><div style="flex:1"><small>PALABRA DEL DÍA</small><b>${esc(w[0])}</b><span>${esc(w[1])}</span></div><button class="mini" id="wodsay" data-w="${esc(w[0])}" data-e="${esc(w[1])}" aria-label="Escuchar">${I.spk}</button></div>`})()}
   <button class="review" id="rev"${nw<3?" disabled":""}><span class="ic">${I.dumbbell}</span><span><b>Repasar errores</b><small>${nw<3?"Cuando te equivoques, acá vas a poder practicar esas palabras.":nw+" palabras y frases para practicar"}</small></span></button>
   <button class="review pr" id="prac"><span class="ic" style="background:#1f9d55">${I.target}</span><span><b>Práctica</b><small>Escucha, pronunciación, escritura y repaso · ${S.hearts<MAXH?"+1 vida al terminar":"no gasta vidas"}</small></span></button>
   <div class="tools"><button class="review" id="chal"><span class="ic" style="background:var(--sun);color:#5a3d00">${I.bolt}</span><span><b>Desafío</b><small>60 s · récord ${S.best}</small></span></button>
   <button class="review" id="wds"><span class="ic" style="background:var(--blue)">${I.book}</span><span><b>Mis palabras</b><small>${known().length} aprendidas</small></span></button>
   <button class="review" id="gms"><span class="ic" style="background:#ff5a5f">${I.target}</span><span><b>Juegos</b><small>Ahorcado, memotest y sopa de letras</small></span></button>
-  <button class="review" id="sts"><span class="ic" style="background:#0f9bb0">${I.book}</span><span><b>Historias</b><small>${Object.keys(S.lst).length} de ${LS.length} leídas</small></span></button>
-  <button class="review" id="tlk" style="grid-column:1/-1"><span class="ic" style="background:#8a5cf0">${I.chat}</span><span><b>Conversá</b><small>Charlas en situaciones reales · ${Object.keys(S.talk).length} de ${SC.length} hechas</small></span></button></div>`;
+  ${PT()?`<p class="sub" style="grid-column:1/-1;font-size:13px;margin:4px 2px">Historias largas y Conversá están disponibles por ahora en el curso de inglés.</p>`:""}
+  <button class="review" id="sts"${PT()?' hidden':''}><span class="ic" style="background:#0f9bb0">${I.book}</span><span><b>Historias</b><small>${Object.keys(S.lst).length} de ${LS.length} leídas</small></span></button>
+  <button class="review" id="tlk" style="grid-column:1/-1"${PT()?' hidden':''}><span class="ic" style="background:#8a5cf0">${I.chat}</span><span><b>Conversá</b><small>Charlas en situaciones reales · ${Object.keys(S.talk).length} de ${SC.length} hechas</small></span></button></div>`;
  U.forEach((u,ui)=>{
   const udone=Math.max(0,Math.min(NPU,S.done-ui*NPU));
   h+=`<div class="unit${S.legend[ui]?" legend":""}" style="--c:${u.c};--d:${u.d}"><span class="unum" aria-hidden="true">${ui+1}</span><span class="uem" aria-hidden="true">${UE[ui]||"⭐"}</span><div style="flex:1"><small class="uk">Unidad ${ui+1}</small><h2>${esc(u.n)}</h2><p>${esc(u.sub)}</p><div class="upr"><i style="width:${udone/NPU*100}%"></i></div></div><span class="ub">${S.legend[ui]?`<span class="lgd" title="Unidad en Leyenda">${I.crown}</span>`:S.done>=(ui+1)*NPU?`<button class="guide" data-leg="${ui}" aria-label="Nivel Leyenda de la unidad ${ui+1}">${I.crown}<span>Leyenda</span></button>`:""}${ui*NPU>S.done?`<button class="guide" data-jump="${ui}" aria-label="Examen para saltar a la unidad ${ui+1}">${I.bolt}<span>Saltar</span></button>`:""}<button class="guide" data-u="${ui}" aria-label="Guía de la unidad ${ui+1}">${I.book}<span>Guía</span></button></span></div><div class="path${S.legend[ui]?" legend":""}" style="--c:${u.c}"><svg class="hills" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 70 Q70 30 140 62 T280 58 T400 50 V120 H0z" fill="var(--c)" opacity=".10"/><path d="M0 92 Q90 60 180 88 T400 80 V120 H0z" fill="var(--c)" opacity=".14"/></svg>${deco(ui,u)}`;
@@ -854,6 +861,8 @@ function learn(){
   start(gi);
  });
  document.getElementById("chal").onclick=()=>{SND.tap();challenge()};
+ if(AND("updateWidget"))try{const w=wodWord();Android.updateWidget(S.streak,w[0],w[1],Math.min(S.todayXp,9999),S.goal)}catch(e){}
+ document.getElementById("crs").onclick=()=>{SND.tap();courseModal()};
  document.getElementById("wodsay").onclick=ev=>{const b=ev.currentTarget;say([[b.dataset.w,"en"],[b.dataset.e,"es"]])};
  document.getElementById("gms").onclick=()=>{SND.tap();tab="games";show()};
  document.getElementById("sts").onclick=()=>{SND.tap();tab="stories";show()};
@@ -997,7 +1006,7 @@ function words(){
  const all=unlockedW(),k=known().length;
  let h=`<div class="page"><button class="ghost" id="back" style="margin-bottom:12px">← Volver</button><h2>Mis palabras</h2><p class="sub">${k} de ${all.length} palabras aprendidas. Tocá una para escucharla.</p>
   <button class="review" id="flash" style="margin:0 0 14px;width:100%"><span class="ic" style="background:#e0457b">${I.book}</span><span><b>Tarjetas de repaso</b><small>Dalas vuelta y fijate si te acordás</small></span></button>
-  <input class="inp" id="q" style="min-height:0;margin-bottom:12px" placeholder="Buscar en inglés o español…" value="${esc(wq)}" autocomplete="off"><div id="wl"></div></div>`;
+  <input class="inp" id="q" style="min-height:0;margin-bottom:12px" placeholder="Buscar en ${LNAME()} o español…" value="${esc(wq)}" autocomplete="off"><div id="wl"></div></div>`;
  shell(h);
  const draw=()=>{const q=norm(wq);let cur=-1,o="";
   all.filter(w=>!q||norm(w[0]).includes(q)||norm(w[1]).includes(q)).forEach(w=>{
@@ -1080,7 +1089,7 @@ function streakScreen(){
 }
 
 /* ================= GENERADOR DE EJERCICIOS ================= */
-const ALLW=U.flatMap(u=>u.w);
+let ALLW=U.flatMap(u=>u.w);
 /* ================= MÉTODO ESTILO DUOLINGO: dibujos, pistas y palabras nuevas ================= */
 const EMO={hello:"👋","good morning":"🌅","good night":"🌙",friend:"🧑‍🤝‍🧑","thank you":"🙏",name:"🏷️",sorry:"😔",yes:"👍",
 water:"💧",bread:"🍞",apple:"🍎",milk:"🥛",coffee:"☕",cheese:"🧀",rice:"🍚",egg:"🥚",chicken:"🍗",juice:"🧃",
@@ -1106,12 +1115,81 @@ tree:"🌳",flower:"🌸",river:"🏞️",mountain:"⛰️",sea:"🌊",star:"⭐
 const HE={mi:"my",tu:"your",es:"is",esta:"is / this",son:"are",el:"the / he",la:"the",los:"the",las:"the",un:"a",una:"a",yo:"I",tengo:"I have",tiene:"has",y:"and",con:"with",de:"of / from",en:"in / on / at",muy:"very",quiero:"I want",necesito:"I need",me:"me",a:"to",por:"for / by",gusto:"pleasure",mucho:"much / a lot",muchas:"many",ella:"she",grande:"big",pequena:"small",bueno:"good",aqui:"here",sobre:"on",frio:"cold",hace:"it is (clima)",que:"what",donde:"where",como:"how / I eat",cuanto:"how much",cuesta:"costs",puedo:"can I",pagar:"to pay",voy:"I am going",vamos:"we go / let's",nos:"us",vemos:"see",tambien:"too",hoy:"today",bebo:"I drink",tiene:"has",todos:"every / all",dias:"days",lunes:"Monday",ayer:"yesterday",fui:"I went",comi:"I ate",vi:"I saw",pelicula:"movie",anoche:"last night",playa:"beach",duele:"hurts",estoy:"I am",cansado:"tired",enferma:"sick",lavate:"wash",manos:"hands",toma:"take",esa:"that",ver:"to see",viajar:"to travel",proximo:"next",sueno:"dream",pronto:"soon",lloviendo:"raining",calor:"heat",nieve:"snow",sol:"sun",salio:"came out",rota:"broken",abri:"open",cerra:"close",puerta:"door",ventana:"window",feliz:"happy",triste:"sad",porque:"why / because",enojada:"angry",conmigo:"with me",un_poco:"a little",poco:"little",calma:"calm",mantene:"keep",telefono:"phone",bateria:"battery",mandame:"send me",olvide:"I forgot",contrasena:"password",saca:"take",foto:"photo",llamame:"call me",mas:"more",tarde:"late / afternoon",caballo:"horse",rapido:"fast",veo:"I see",oso:"bear",pajaro:"bird",volar:"fly",peces:"fish",viven:"live",agua:"water",mono:"monkey",come:"eats",miedo:"fear",serpientes:"snakes",nuestro:"our",equipo:"team",gano:"won",partido:"game",nado:"I swim",mananas:"mornings",buen:"good",jugador:"player",entrenador:"coach",practicamos:"we practice",sabados:"Saturdays",pasame:"pass me",pelota:"ball",menu:"menu",cuenta:"bill",quisiera:"I would like",sopa:"soup",caliente:"hot",queremos:"we want",postre:"dessert",tenedor:"fork",cielo:"sky",azul:"blue",encantan:"love",montanas:"mountains",rio:"river",largo:"long",mira:"look",luna:"moon",hay:"there is / are",estrellas:"stars",caminamos:"we walk",bosque:"forest",siempre:"always",nunca:"never",desayuno:"breakfast / I have breakfast",corro:"I run",lee:"reads",noche:"night",ducha:"shower",doy:"I give / take",trabajamos:"we work",soy:"I am",estudiante:"student",profesor:"teacher",amable:"nice",reunion:"meeting",jefe:"boss",ocupado:"busy",estudio:"I study",ingles:"English",libro:"book",mesa:"table",camisa:"shirt",roja:"red",zapatos:"shoes",negros:"black",usa:"wears",vestido:"dress",campera:"jacket",verde:"green",gusta:"like",sombrero:"hat",gato:"cat",blanco:"white",perro:"dog",madre:"mother",padre:"father",hermana:"sister",familia:"family",casa:"house / home",pequena:"small",nombre:"name",hola:"hello",amigo:"friend",gracias:"thanks",si:"yes",favor:"favor (please)",buenos:"good",buenas:"good",noches:"night",manana:"morning / tomorrow",pan:"bread",manzana:"apple",cafe:"coffee",leche:"milk",quiero:"I want",pollo:"chicken",arroz:"rice",jugo:"juice",dos:"two",gatos:"cats",trabajo:"I work / job",diez:"ten",horas:"hours",hora:"hour / time",semana:"week",siete:"seven",hotel:"hotel",boleto:"ticket",hermosa:"beautiful",dobla:"turn",izquierda:"left",ciudad:"city",aeropuerto:"airport",lejos:"far",barata:"cheap",caros:"expensive",tarjeta:"card",bolsa:"bag",tienda:"store",abierta:"open",cocina:"kitchen",cama:"bed",jardin:"garden",silla:"chair",te:"you",llame:"call",ayudar:"help",aprender:"learn"};
 const HS={my:"mi",your:"tu",is:"es / está",are:"son / están",the:"el / la",a:"un / una",an:"un / una",i:"yo",have:"tengo / tener",has:"tiene",and:"y",with:"con",of:"de",in:"en",on:"sobre / en",at:"en",very:"muy",want:"querer",need:"necesitar",to:"a / para",she:"ella",he:"él",we:"nosotros",it:"eso",big:"grande",small:"pequeño",good:"bueno",here:"aquí",home:"casa",nice:"lindo / amable",meet:"conocer",you:"vos / tú",too:"también",what:"qué",where:"dónde",how:"cómo",much:"mucho",many:"muchos",this:"este / esta",that:"ese / esa",can:"poder",do:"hacer",did:"(pasado de do)",go:"ir",see:"ver",look:"mirar",like:"gustar",every:"cada / todos",day:"día",days:"días",night:"noche",morning:"mañana",will:"(futuro)",going:"yendo / voy a",there:"ahí",not:"no",me:"me / mí",later:"más tarde",fast:"rápido",live:"vivir",eat:"comer",eats:"come",drink:"beber",very_:"muy",am:"soy / estoy",was:"era / estuve",were:"eran",be:"ser / estar",please:"por favor",thank:"agradecer",help:"ayudar",can_:"puedo",for:"para",by:"por / con",from:"de",our:"nuestro",them:"ellos",they:"ellos",his:"su (de él)",her:"su (de ella)",some:"algo de",more:"más",far:"lejos",close:"cerca / cerrar",open:"abrir",take:"tomar / llevar",turn:"doblar",straight:"derecho",time:"hora / tiempo",o:"",clock:"reloj",send:"mandar",forgot:"olvidé",feel:"sentir",better:"mejor",about:"sobre",why:"por qué",all:"todos",little:"poco",stay:"quedarse",dark:"oscuro",new:"nuevo",excuse:"disculpar",station:"estación",anything:"algo",else:"más",ready:"listo",would:"(condicional)",idea:"idea",ice:"hielo",cream:"crema",swim:"nadar",report:"informe",great:"genial",perfect:"perfecto",these:"estos",with_:"con",late:"tarde",star:"estrella",stars:"estrellas",hurts:"duele",wears:"usa",lets:"vamos a",let:"dejar",out:"afuera",windy:"ventoso",raining:"lloviendo",broken:"roto",clean:"limpiar",mom:"mamá",dad:"papá",animal:"animal",strong:"fuerte",next:"al lado / próximo",plans:"planes",london:"Londres",wow:"¡guau!",photos:"fotos",later_:"luego",sorry:"perdón",no:"no / ningún",yes:"sí",bananas:"bananas",snakes:"serpientes",scared:"asustado",won:"ganó",football:"fútbol",movie:"película",pizza:"pizza",went:"fui",ate:"comí",saw:"vi",bought:"compró",visited:"visité",played:"jugamos",cats:"gatos",hours:"horas",seven:"siete",days_:"días",english:"inglés",table:"mesa",busy:"ocupado",today:"hoy",tomorrow:"mañana",forty:"cuarenta",dollars:"dólares",cash:"efectivo",check:"cheque",umbrella:"paraguas",kitchen:"cocina"};
 U.forEach(u=>u.w.forEach(([en,es])=>{if(!en.includes(" "))HS[norm(en)]=HS[norm(en)]||es;if(!es.includes(" "))HE[norm(es)]=HE[norm(es)]||en}));
-function hintify(text,from){const D=from==="en"?HS:HE;
+function hintify(text,from){const D=from==="en"?(PT()?HP:HS):(PT()?HEPT:HE);
  return String(text).split(" ").map(tok=>{const k=norm(tok).replace(/ /g,"");const h=D[k];
   return h?`<span class="hw" tabindex="0" data-h="${esc(h)}" data-w="${esc(tok.replace(/[¿?¡!.,]/g,""))}" data-l="${from}">${esc(tok)}</span>`:esc(tok)}).join(" ")}
 function bindHints(root){root.querySelectorAll(".hw").forEach(h=>{h.onclick=ev=>{ev.stopPropagation();const was=h.classList.contains("open");
  root.querySelectorAll(".hw.open").forEach(x=>x.classList.remove("open"));if(!was){h.classList.add("open");say([[h.dataset.w,h.dataset.l]])}}})}
 
+/* ================= CURSO DE PORTUGUÉS ================= */
+const UPT=[
+{n:"Saudações",sub:"Saludar y presentarte",c:"#16a34a",d:"#0f7a36",
+ w:[["olá","hola","👋"],["tchau","chau","🙋"],["por favor","por favor","🥺"],["obrigado","gracias","🙏"],["sim","sí","👍"],["não","no","👎"],["bom dia","buen día","🌅"],["boa noite","buenas noches","🌙"],["amigo","amigo","🧑‍🤝‍🧑"],["nome","nombre","🏷️"]],
+ f:[["olá meu amigo","Hola, mi amigo"],["meu nome é Ana","Mi nombre es Ana"],["muito obrigado","Muchas gracias"],["sim por favor","Sí, por favor"],["bom dia professor","Buen día, profesor"],["prazer em conhecer você","Mucho gusto en conocerte"]],
+ st:{p:["Tom","Ana"],l:[["Olá! Meu nome é Tom.","¡Hola! Me llamo Tom."],["Oi Tom, eu sou a Ana.","Hola Tom, soy Ana."],["Prazer, Ana!","¡Mucho gusto, Ana!"],["O prazer é meu!","¡El gusto es mío!"]],
+  q:[["¿Cómo se llama el chico?","Tom",["Tom","Ana","Ben","Sam"]],["¿Qué dice Ana al final?","O prazer é meu!",["O prazer é meu!","Tchau","Bom dia","Obrigado"]]]}},
+{n:"Comida",sub:"Pedir y hablar de comida",c:"#ea580c",d:"#b04008",
+ w:[["água","agua","💧"],["pão","pan","🍞"],["maçã","manzana","🍎"],["leite","leche","🥛"],["café","café","☕"],["queijo","queso","🧀"],["arroz","arroz","🍚"],["ovo","huevo","🥚"],["frango","pollo","🍗"],["suco","jugo","🧃"]],
+ f:[["eu bebo água","Yo bebo agua"],["o pão é bom","El pan es bueno"],["eu como uma maçã","Yo como una manzana"],["café com leite","Café con leche"],["eu quero frango e arroz","Quiero pollo y arroz"],["o suco está gelado","El jugo está frío"]],
+ st:{p:["Garçom","Ana"],l:[["Olá, o que você quer?","Hola, ¿qué querés?"],["Eu quero um café com leite.","Quiero un café con leche."],["Mais alguma coisa?","¿Algo más?"],["Sim, pão com queijo, por favor.","Sí, pan con queso, por favor."]],
+  q:[["¿Qué bebida pide Ana?","Um café com leite",["Um café com leite","Um suco","Água","Chá"]],["¿Qué come Ana?","Pão com queijo",["Pão com queijo","Arroz e frango","Uma maçã","Ovos"]]]}},
+{n:"Família",sub:"Tu casa y tu gente",c:"#db2777",d:"#9d1752",
+ w:[["mãe","madre","👩"],["pai","padre","👨"],["irmão","hermano","👦"],["irmã","hermana","👧"],["filho","hijo","👶"],["filha","hija","🎀"],["família","familia","👨‍👩‍👧"],["casa","casa","🏠"],["cachorro","perro","🐶"],["gato","gato","🐱"]],
+ f:[["minha mãe está aqui","Mi madre está aquí"],["eu tenho um cachorro","Tengo un perro"],["minha irmã tem um gato","Mi hermana tiene un gato"],["a família é grande","La familia es grande"],["meu pai está em casa","Mi padre está en casa"],["a casa é pequena","La casa es pequeña"]],
+ st:{p:["Ben","Lucy"],l:[["Você tem irmãos?","¿Tenés hermanos?"],["Sim, eu tenho dois irmãos.","Sí, tengo dos hermanos."],["Você tem um cachorro?","¿Tenés un perro?"],["Não, mas minha irmã tem um gato.","No, pero mi hermana tiene un gato."]],
+  q:[["¿Cuántos hermanos tiene Lucy?","Dois",["Dois","Um","Três","Nenhum"]],["¿Quién tiene un gato?","A irmã dela",["A irmã dela","Ben","O pai dela","A mãe dela"]]]}},
+{n:"Viagem",sub:"Moverte por la ciudad",c:"#0891b2",d:"#05637a",
+ w:[["trem","tren","🚆"],["passagem","pasaje","🎫"],["praia","playa","🏖️"],["rua","calle","🛣️"],["cidade","ciudad","🏙️"],["mapa","mapa","🗺️"],["onde","dónde","❓"],["esquerda","izquierda","⬅️"],["direita","derecha","➡️"],["aeroporto","aeropuerto","🛫"]],
+ f:[["onde fica o hotel","¿Dónde queda el hotel?"],["eu preciso de uma passagem","Necesito un pasaje"],["a praia é linda","La playa es hermosa"],["vire à esquerda","Doblá a la izquierda"],["a cidade é grande","La ciudad es grande"],["o aeroporto fica longe","El aeropuerto queda lejos"]],
+ st:{p:["Turista","Homem"],l:[["Com licença, onde fica a estação de trem?","Disculpe, ¿dónde queda la estación de tren?"],["Siga em frente e vire à direita.","Siga derecho y doble a la derecha."],["Fica longe?","¿Queda lejos?"],["Não, fica muito perto.","No, queda muy cerca."]],
+  q:[["¿Qué busca el turista?","A estação de trem",["A estação de trem","A praia","O aeroporto","Um hotel"]],["¿Para dónde tiene que doblar?","Direita",["Direita","Esquerda","Para trás","Para cima"]]]}},
+{n:"Cores e roupa",sub:"Describir lo que usás",c:"#7c3aed",d:"#5521b5",
+ w:[["vermelho","rojo","🔴"],["azul","azul","🔵"],["verde","verde","🟢"],["preto","negro","⚫"],["branco","blanco","⚪"],["camisa","camisa","👕"],["sapatos","zapatos","👟"],["vestido","vestido","👗"],["chapéu","sombrero","🎩"],["jaqueta","campera","🧥"]],
+ f:[["eu tenho uma camisa vermelha","Tengo una camisa roja"],["os sapatos são pretos","Los zapatos son negros"],["ela usa um vestido azul","Ella usa un vestido azul"],["minha jaqueta é verde","Mi campera es verde"],["eu gosto do seu chapéu","Me gusta tu sombrero"],["o gato é branco","El gato es blanco"]],
+ st:{p:["Mia","Leo"],l:[["Eu gosto da sua jaqueta!","¡Me gusta tu campera!"],["Obrigado, é nova.","Gracias, es nueva."],["É azul ou preta?","¿Es azul o negra?"],["É azul escuro.","Es azul oscuro."]],
+  q:[["¿Qué le gusta a Mia?","A jaqueta",["A jaqueta","Os sapatos","O chapéu","A camisa"]],["¿De qué color es?","Azul escuro",["Azul escuro","Preto","Vermelho","Verde"]]]}},
+{n:"Números e tempo",sub:"Días, horas y cantidades",c:"#ca8a04",d:"#8f6203",
+ w:[["um","uno","1️⃣"],["dois","dos","2️⃣"],["três","tres","3️⃣"],["dez","diez","🔟"],["hoje","hoy","📅"],["amanhã","mañana","🌄"],["semana","semana","🗓️"],["hora","hora","⏰"],["segunda-feira","lunes"],["domingo","domingo"]],
+ f:[["eu tenho dois gatos","Tengo dos gatos"],["hoje é segunda-feira","Hoy es lunes"],["até amanhã","Hasta mañana"],["eu trabalho dez horas","Trabajo diez horas"],["que horas são","¿Qué hora es?"],["a semana tem sete dias","La semana tiene siete días"]],
+ st:{p:["Sam","Kim"],l:[["Que horas são?","¿Qué hora es?"],["São três horas.","Son las tres."],["Ai não! Minha aula é às três!","¡Ay no! ¡Mi clase es a las tres!"],["Corre, Sam!","¡Corré, Sam!"]],
+  q:[["¿Qué hora es?","Três horas",["Três horas","Dez horas","Uma hora","Duas horas"]],["¿Qué tiene Sam a las tres?","Uma aula",["Uma aula","Uma festa","O almoço","Um trem"]]]}},
+{n:"Rotina",sub:"Contar tu día",c:"#059669",d:"#047052",
+ w:[["acordar","despertarse","⏰"],["dormir","dormir","😴"],["café da manhã","desayuno","🥞"],["banho","baño (ducha)","🚿"],["trabalhar","trabajar","💼"],["ler","leer","📖"],["correr","correr","🏃"],["sempre","siempre"],["nunca","nunca"],["cedo","temprano","🐓"]],
+ f:[["eu acordo cedo","Me despierto temprano"],["eu sempre tomo café da manhã","Siempre desayuno"],["ela lê à noite","Ella lee de noche"],["eu nunca corro","Nunca corro"],["eu tomo banho","Me baño"],["nós trabalhamos todos os dias","Trabajamos todos los días"]],
+ st:{p:["Ana","Tom"],l:[["O que você faz de manhã?","¿Qué hacés a la mañana?"],["Eu acordo às seis e corro.","Me despierto a las seis y corro."],["Todos os dias?","¿Todos los días?"],["Sim, eu sempre corro antes do café da manhã.","Sí, siempre corro antes del desayuno."]],
+  q:[["¿A qué hora se despierta Tom?","Às seis",["Às seis","Às nove","Às três","Às dez"]],["¿Qué hace antes del desayuno?","Ele corre",["Ele corre","Ele lê","Ele dorme","Ele trabalha"]]]}},
+{n:"A casa",sub:"Ambientes y muebles",c:"#a16207",d:"#704404",
+ w:[["cozinha","cocina","🍳"],["quarto","dormitorio","🛏️"],["banheiro","baño","🛁"],["janela","ventana","🪟"],["porta","puerta","🚪"],["mesa","mesa"],["cadeira","silla","🪑"],["cama","cama","😴"],["jardim","jardín","🌷"],["chão","piso"]],
+ f:[["a cozinha é grande","La cocina es grande"],["abra a janela","Abrí la ventana"],["o gato está na cama","El gato está en la cama"],["feche a porta por favor","Cerrá la puerta, por favor"],["minha casa tem um jardim","Mi casa tiene un jardín"],["a cadeira está quebrada","La silla está rota"]],
+ st:{p:["Mãe","Sam"],l:[["Sam, onde você está?","Sam, ¿dónde estás?"],["Estou na cozinha.","Estoy en la cocina."],["Por favor, arrume o seu quarto.","Por favor, ordená tu dormitorio."],["Tá bom, mãe!","¡Bueno, mamá!"]],
+  q:[["¿Dónde está Sam?","Na cozinha",["Na cozinha","No jardim","No banheiro","No quarto"]],["¿Qué tiene que ordenar?","O quarto dele",["O quarto dele","A cozinha","O carro","A janela"]]]}}
+];
+const TIPSPT=[
+ ["Un varón dice «obrigado» y una mujer dice «obrigada». «Oi» es un hola más informal que «olá».",["Oi, tudo bem?","Tudo bem!"]],
+ ["Muchas palabras se parecen al español (café, arroz, mapa). Ojo: «suco» es jugo y «leite» es leche. «Eu quero» = yo quiero.",["Eu quero água","Um café, por favor"]],
+ ["«Meu» y «minha» son «mi» (masculino y femenino): meu pai, minha mãe. ¡Cuidado! «Cachorro» en portugués es perro.",["Meu pai","Minha mãe"]],
+ ["«Onde fica…?» = ¿dónde queda…? «Vire à esquerda» = doblá a la izquierda. perto = cerca y longe = lejos.",["Onde fica a praia?","Fica perto"]],
+ ["Los colores cambian según el género: vermelho / vermelha, preto / preta. «Eu gosto de…» = me gusta…",["Eu gosto do azul","Camisa vermelha"]],
+ ["Los días de semana se dicen segunda-feira (lunes), terça-feira (martes)… «Que horas são?» = ¿qué hora es?",["Até amanhã","São duas horas"]],
+ ["«Tomar banho» = bañarse y «café da manhã» = desayuno. Para hábitos: «eu sempre…», «eu nunca…».",["Eu sempre leio","Eu acordo cedo"]],
+ ["«em + o» se junta y queda «no» (no quarto = en el dormitorio). «em + a» queda «na» (na cozinha).",["Estou na cozinha","O gato está no quarto"]]
+];
+const UEPT=["👋","🍞","👨‍👩‍👧","🚆","👕","⏰","🌅","🏡"];
+const HP={eu:"yo",voce:"vos / tú",meu:"mi",minha:"mi",e:"es / y",o:"el",a:"la",os:"los",as:"las",um:"un",uma:"una",com:"con",de:"de",em:"en",na:"en la",no:"en el",tem:"tiene",tenho:"tengo",esta:"está",estou:"estoy",nao:"no",sim:"sí",muito:"mucho",quero:"quiero",gosto:"me gusta",do:"del",da:"de la",ela:"ella",ele:"él",nos:"nosotros",sao:"son",que:"qué",onde:"dónde",fica:"queda",sou:"soy",bom:"bueno",boa:"buena",aqui:"aquí",mas:"pero",seu:"tu",sua:"tu",prazer:"gusto",oi:"hola",ai:"ay",corre:"corré",aula:"clase",horas:"horas",as_:"a las",faz:"hacés",manha:"mañana",todos:"todos",dias:"días",antes:"antes",seis:"seis",siga:"siga",frente:"adelante",vire:"doblá",perto:"cerca",longe:"lejos",licenca:"permiso",estacao:"estación",mais:"más",alguma:"alguna",coisa:"cosa",nova:"nueva",escuro:"oscuro",ou:"o",preta:"negra",bebo:"bebo",como:"como",gelado:"frío",preciso:"necesito",linda:"linda",abra:"abrí",feche:"cerrá",arrume:"ordená",quebrada:"rota",ta:"está",ate:"hasta",sete:"siete",le:"lee",noite:"noche",tomo:"tomo",trabalhamos:"trabajamos",acordo:"me despierto",irmaos:"hermanos",dela:"de ella",dele:"de él",usa:"usa",grande:"grande",pequena:"pequeña",professor:"profesor",conhecer:"conocer",obrigado:"gracias"};
+const HEPT={mi:"meu / minha",el:"o",la:"a",los:"os",un:"um",una:"uma",y:"e",con:"com",de:"de",en:"em",es:"é",esta:"está",tengo:"tenho",tiene:"tem",quiero:"quero",yo:"eu",me:"me",gusta:"gosto",hola:"olá",gracias:"obrigado",muchas:"muito",necesito:"preciso",donde:"onde",queda:"fica",que:"que",hora:"hora",hoy:"hoje",hasta:"até",nos:"nos",vemos:"vemos",siempre:"sempre",nunca:"nunca",tu:"seu / sua",ella:"ela",negros:"pretos",roja:"vermelha"};
+UPT.forEach(u=>u.w.forEach(([pt,es,em])=>{if(em)EMO[pt]=em;if(!pt.includes(" "))HP[norm(pt)]=HP[norm(pt)]||es;if(!es.includes(" "))HEPT[norm(es)]=HEPT[norm(es)]||pt}));
+HIGH.push("Mãe");
+const TIPSEN=TIPS,UEEN=UE;
+const PT=()=>S.course==="pt",TL=()=>PT()?"pt":"en",LNAME=()=>PT()?"portugués":"inglés";
+function applyCourse(){const pt=PT();U=pt?UPT:UEN;TIPS=pt?TIPSPT:TIPSEN;UE=pt?UEPT:UEEN;TOTAL=U.length*NPU;ALLW=U.flatMap(u=>u.w)}
+const CK=["done","str","weak","weakF","seen","legend","rh","lst","talk","placed"];
+function setCourse(c){if(c===(S.course||"en"))return;S.courses=S.courses||{};const cur={};CK.forEach(k=>cur[k]=S[k]);S.courses[S.course||"en"]=cur;
+ const nx=S.courses[c]||{};CK.forEach(k=>{S[k]=nx[k]!==undefined?nx[k]:(DEF[k]!==undefined?JSON.parse(JSON.stringify(DEF[k])):undefined)});S.course=c;applyCourse();save();tab="learn";show()}
+function courseModal(){const m=document.createElement("div");m.className="modal";
+ m.innerHTML=`<div><h3>¿Qué querés aprender?</h3><div class="opts" style="margin-top:10px">${[["en","🇺🇸","Inglés","30 unidades · A1 a B2"],["pt","🇧🇷","Portugués","8 unidades · A1 (¡nuevo!)"]].map(c=>`<button class="opt crs${(S.course||"en")===c[0]?" sel":""}" data-c="${c[0]}"><span style="font-size:30px">${c[1]}</span><span style="flex:1;text-align:start"><b>${c[2]}</b><br><small style="color:var(--mute)">${c[3]}</small></span></button>`).join("")}</div>
+  <p class="sub" style="font-size:13px;margin-top:10px">Cada curso guarda su propio avance. Tu racha, XP y gemas son las mismas.</p><button class="go" id="mNo" style="background:var(--line);color:var(--ink);box-shadow:none">Cerrar</button></div>`;
+ document.body.appendChild(m);m.querySelector("#mNo").onclick=()=>m.remove();
+ m.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{m.remove();SND.tap();setCourse(b.dataset.c)})}
 function exs(pool,lv){
  lv=lv===undefined?1:lv;const nOpt=lv===0?2:3,nDis=lv===0?1:lv===2?5:3;
  const single=pool.map(x=>x[0]).filter(x=>!x.includes(" "));
@@ -1122,7 +1200,7 @@ function exs(pool,lv){
   mc:p=>({k:"mc",p,q:`¿Cómo se dice «${p[1]}»?`,ans:p[0],opts:shuf([p[0],...others(p).map(x=>x[0])])}),
   rev:p=>({k:"rev",p,q:"¿Qué significa?",word:p[0],ans:p[1],opts:shuf([p[1],...others(p).map(x=>x[1])])}),
   ls:p=>({k:"listen",p,q:"¿Qué escuchaste?",say:p[0],ans:p[1],opts:shuf([p[1],...others(p).map(x=>x[1])])}),
-  ty:p=>({k:"type",p,q:"Escribí en inglés",src:p[1],ans:p[0],clue:lv===0?p[0].split("").map((c,i)=>c===" "?"  ":i===0?c:"_").join(" "):""}),
+  ty:p=>({k:"type",p,q:`Escribí en ${LNAME()}`,src:p[1],ans:p[0],clue:lv===0?p[0].split("").map((c,i)=>c===" "?"  ":i===0?c:"_").join(" "):""}),
   bd:s=>{const ws=s[0].split(" ");return{k:"build",s,q:"Traducí esta frase",src:s[1],ans:s[0],tiles:shuf([...ws,...pick(single.filter(x=>!ws.includes(x)),nDis)])}},
   bdEs:s=>{const ws=esWords(s[1]);return{k:"build",lang:"es",s,q:"Traducí al español",src:s[0],ans:ws.join(" "),tiles:shuf([...ws,...pick(singleEs.filter(x=>!ws.includes(x)),nDis)])}},
   fill:s=>{const ws=s[0].split(" ");let bi=0;ws.forEach((x,i)=>{if(x.length>ws[bi].length)bi=i});
@@ -1182,7 +1260,7 @@ function markWeak(e,right){
 /* ================= PRUEBA DE NIVEL ================= */
 const PG=[0,2,4,6,8,11,14,17];
 function startPlace(){
- const q=[];PG.forEach((u,gi)=>{const E=exs(U[u].w,1),w=pick(U[u].w,2),f=rnd(U[u].f);
+ const q=[];PG.filter(u=>u<U.length).forEach((u,gi)=>{const E=exs(U[u].w,1),w=pick(U[u].w,2),f=rnd(U[u].f);
   const a=u<4?E.rev(w[0]):E.ty(w[0]),b=u<6?E.mc(w[1]):E.bd(f);a.pu=gi;b.pu=gi;q.push(a,b)});
  L={place:{bad:{}},gi:-2,q,i:0,total:q.length,ok:0,miss:0,combo:0,best:0,t0:Date.now()};render();
 }
@@ -1513,7 +1591,7 @@ function render(){
   ex.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{ex.querySelectorAll(".opt").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");SND.tap();const v=e.opts[b.dataset.i];document.getElementById("gap").textContent=v;set(v)});
  }else if(k==="type"||k==="dict"){
   ex.innerHTML=`<h3>${esc(e.q)}</h3>${k==="type"?tell(e.src,e.src,"","es","es")+(e.clue?`<p class="hint">Pista: ${esc(e.clue)}</p>`:""):`<div class="say"><button class="spk" data-say="${esc(e.say)}" aria-label="Escuchar">${I.spk}</button><button class="spk slow" data-slow="${esc(e.say)}" aria-label="Escuchar lento">${I.slow}</button></div><p class="saytxt"${TTS.works===false?"":" hidden"}>«${esc(e.say)}»</p>${TTS.works===false?"":`<button class="skip noear" type="button">No puedo escuchar ahora</button>`}`}
-   <textarea class="inp" id="inp" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Escribí en inglés…"></textarea>`;
+   <textarea class="inp" id="inp" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Escribí en ${LNAME()}…"></textarea>`;
   const inp=document.getElementById("inp");
   inp.oninput=()=>set(inp.value.trim()||null);
   inp.onkeydown=ev=>{if(ev.key==="Enter"){ev.preventDefault();if(!go.disabled)go.click()}};
@@ -1525,11 +1603,11 @@ function render(){
    window.__onSpeechReady=()=>{mic.classList.add("rec");mic.querySelector("span").textContent="Escuchando… hablá ahora"};
    window.__onSpeech=t=>{mic.classList.remove("rec");mic.querySelector("span").textContent="Tocá para hablar";if(t)stt.innerHTML=pron(e.say,t);else stt.textContent="No te escuché. Probá de nuevo.";if(t)set(t)};
    window.__onSpeechErr=m=>{mic.classList.remove("rec");mic.querySelector("span").textContent="Tocá para hablar";stt.textContent=m};
-   mic.onclick=()=>{stt.textContent="";Android.listen()};
+   mic.onclick=()=>{stt.textContent="";if(AND("listenLang"))Android.listenLang(PT()?"pt-BR":"en-US");else Android.listen()};
   }else
   mic.onclick=()=>{const R=window.SpeechRecognition||window.webkitSpeechRecognition;
    if(!R){stt.textContent="Este navegador no permite usar el micrófono acá. Tocá «No puedo hablar ahora».";return}
-   try{const r=new R();r.lang="en-US";r.interimResults=false;mic.classList.add("rec");mic.querySelector("span").textContent="Escuchando…";
+   try{const r=new R();r.lang=PT()?"pt-BR":"en-US";r.interimResults=false;mic.classList.add("rec");mic.querySelector("span").textContent="Escuchando…";
     r.onresult=ev=>{const t=ev.results[0][0].transcript;stt.innerHTML=pron(e.say,t);set(t)};
     r.onerror=()=>{stt.textContent="No pude usar el micrófono. Probá de nuevo o tocá «No puedo hablar ahora»."};
     r.onend=()=>{mic.classList.remove("rec");mic.querySelector("span").textContent="Tocá para hablar"};r.start()}
@@ -1651,6 +1729,7 @@ function updBanner(html,btn,fn){document.getElementById("upd")?.remove();const d
  document.body.appendChild(d);document.getElementById("updgo").onclick=fn;document.getElementById("updx").onclick=()=>d.remove()}
 window.__updateReady=v=>updBanner("<b>¡Hay novedades en Hablá Inglés!</b><span>Se descargaron mejoras nuevas.</span>","ACTUALIZAR",()=>{try{Android.reload()}catch(e){location.reload()}});
 window.__apkUpdate=url=>updBanner("<b>Nueva versión de la app</b><span>Descargá el APK nuevo e instalalo encima (no perdés tu progreso).</span>","DESCARGAR",()=>{try{Android.openUrl(url)}catch(e){}});
+applyCourse();
 window.__back=()=>{const m=document.querySelector(".modal");if(m)return m.remove();
  if(document.querySelector(".lesson")||tab!=="learn"){try{clearInterval(CT)}catch(e){}tab="learn";return show()}
  if(window.Android&&Android.exit)Android.exit()};

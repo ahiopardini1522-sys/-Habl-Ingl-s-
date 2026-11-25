@@ -42,7 +42,7 @@ public class MainActivity extends Activity {
        El contenido de la app (index.html) se descarga de GitHub cada vez que se abre.
        Si hay una versión más nueva, se guarda en el celular y se ofrece «Actualizar».
        NATIVE_VERSION se sube solo cuando cambia este código Java: ahí la app avisa que hay un APK nuevo. */
-    private static final int NATIVE_VERSION = 2;
+    private static final int NATIVE_VERSION = 3;
     private static final String REPO = "ahiopardini1522-sys/-Habl-Ingl-s-";
     private static final String RAW = "https://raw.githubusercontent.com/" + REPO + "/main/";
     private static final String HTML_URL = RAW + "app/src/main/assets/index.html";
@@ -57,9 +57,11 @@ public class MainActivity extends Activity {
     private static final int REQ_MIC = 7;
     private static final int REQ_NOTIF = 8;
     private final Locale EN = Locale.US;
+    private final Locale PT = new Locale("pt", "BR");
     private Locale es = new Locale("es", "AR");
     private long loadedVersion = 0;
     private long lastCheck = 0;
+    private String listenTag = "en-US";
 
     @Override
     protected void onCreate(Bundle state) {
@@ -177,7 +179,7 @@ public class MainActivity extends Activity {
         @JavascriptInterface
         public void speak(String text, String lang, float pitch, float rate) {
             if (!ttsReady || text == null) return;
-            tts.setLanguage("es".equals(lang) ? es : EN);
+            tts.setLanguage("es".equals(lang) ? es : "pt".equals(lang) ? PT : EN);
             tts.setPitch(pitch);
             tts.setSpeechRate(rate);
             tts.speak(text, TextToSpeech.QUEUE_ADD, null, "t" + System.nanoTime());
@@ -193,7 +195,22 @@ public class MainActivity extends Activity {
         public boolean canListen() { return SpeechRecognizer.isRecognitionAvailable(MainActivity.this); }
 
         @JavascriptInterface
-        public void listen() { runOnUiThread(MainActivity.this::startListening); }
+        public void listen() { listenLang("en-US"); }
+
+        @JavascriptInterface
+        public void listenLang(String tag) {
+            listenTag = (tag == null || tag.isEmpty()) ? "en-US" : tag;
+            runOnUiThread(MainActivity.this::startListening);
+        }
+
+        /* ----- widget ----- */
+        @JavascriptInterface
+        public void updateWidget(int streak, String word, String tr, int xp, int goal) {
+            getSharedPreferences(StreakWidget.PREFS, MODE_PRIVATE).edit()
+                .putInt("streak", streak).putString("word", word).putString("tr", tr)
+                .putInt("xp", xp).putInt("goal", goal).apply();
+            StreakWidget.refreshAll(MainActivity.this);
+        }
 
         @JavascriptInterface
         public void exit() { runOnUiThread(MainActivity.this::finish); }
@@ -294,7 +311,7 @@ public class MainActivity extends Activity {
         });
         Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US");
+        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, listenTag);
         i.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
         recognizer.startListening(i);
     }
