@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="app-version" content="202611251745">
+<meta name="app-version" content="202611251830">
 <meta name="theme-color" content="#2a4fe0">
 <title>Hablá Inglés</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -377,6 +377,36 @@ body{background:var(--bg)}
 .ff .emo{font-size:84px;line-height:1}.ff b,.fb2 b{font:700 36px Fredoka,sans-serif}.ff small{color:var(--mute);font-weight:800}.fb2 small{opacity:.85;font-weight:800;font-size:16px}
 .fbtns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}.fbtns .go{font-size:15px}
 @media(prefers-reduced-motion:reduce){.fin{transition:none}}
+
+.pron{display:flex;gap:14px;align-items:center;text-align:start;background:var(--surf);border:2px solid var(--line);border-radius:18px;padding:12px 14px;color:var(--ink)}
+.pring{--p:0;width:74px;height:74px;flex:none;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,var(--surf) 58%,transparent 60%),conic-gradient(var(--ok) calc(var(--p)*1%),var(--line) 0)}
+.pring b{font:700 18px Fredoka,sans-serif}
+.pron p{margin:4px 0;font-size:18px;font-weight:800;line-height:1.6}.pron small{color:var(--mute);font-weight:700}
+.pg{color:var(--ok);cursor:pointer}.pb{color:var(--bad);text-decoration:underline wavy;cursor:pointer}
+
+.sq{background:var(--surf);border:2px solid var(--blue);border-radius:18px;padding:14px;margin-top:12px}.sq>b{display:block;font:600 19px Fredoka,sans-serif;margin-bottom:10px}
+#sbar .go[hidden]{display:none}
+.balloons{position:relative;height:170px;display:flex;justify-content:center;align-items:flex-end}
+.balloons .pico{width:96px;position:relative;z-index:1}
+.bal{position:absolute;bottom:92px;left:50%;width:34px;height:42px;border-radius:50% 50% 46% 46%;background:hsl(var(--h) 85% 60%);transform:translateX(calc((var(--h) / 55 - 2.5) * 34px)) translateY(calc(-1 * (var(--h) / 55) * 3px));box-shadow:inset -5px -6px 0 rgba(0,0,0,.12)}
+.bal::after{content:"";position:absolute;left:50%;top:100%;width:2px;height:30px;background:var(--mute);opacity:.5}
+.bal.pop{opacity:0;transform:scale(1.6);transition:all .3s}
+.clue{display:inline-flex;gap:10px;align-items:center;background:var(--surf);border:2px solid var(--line);border-radius:14px;padding:8px 14px;font-size:20px}.clue .emo{font-size:32px}
+.hword{display:flex;gap:6px;justify-content:center;margin:18px 0;flex-wrap:wrap}.hword span{width:32px;height:44px;border-bottom:4px solid var(--blue);font:700 30px Fredoka,sans-serif;text-transform:uppercase;display:grid;place-items:end center}
+.kb{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:5px}.kb button{min-height:46px;border-radius:10px;border:2px solid var(--line);background:var(--surf);font:700 18px Nunito,sans-serif;text-transform:uppercase;box-shadow:0 3px 0 var(--line);padding:0}
+.kb button.hit{background:var(--okBg);color:var(--ok)}.kb button.miss{opacity:.35}
+.memo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.mc{position:relative;height:86px;border:0;padding:0;background:none;perspective:600px}
+.mc span{position:absolute;inset:0;border-radius:16px;display:grid;place-items:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .35s;font-weight:800;font-size:16px;padding:4px;text-align:center}
+.mf{background:linear-gradient(135deg,#8a5cf0,#2f5bea);color:#fff;font:700 30px Fredoka,sans-serif!important;box-shadow:0 4px 0 #1f3fb0}
+.mb{transform:rotateY(180deg);background:var(--surf);border:2px solid var(--line);box-shadow:0 4px 0 var(--line)}
+.mc.es .mb{color:#c2410c}.mc.en .mb{color:var(--blue)}
+.mc.up .mf{transform:rotateY(180deg)}.mc.up .mb{transform:rotateY(0)}.mc.ok .mb{background:var(--okBg);border-color:var(--ok)}
+.soup{display:grid;gap:3px;background:var(--surf);border:2px solid var(--line);border-radius:16px;padding:8px}
+.sc{aspect-ratio:1;border:0;border-radius:8px;background:var(--card);font:700 17px Fredoka,sans-serif;padding:0;min-height:0}
+.sc.s{background:var(--sun);color:#5a3d00}.sc.f{background:var(--ok);color:#fff}
+.slist{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;justify-content:center}.slist span{background:var(--surf);border:2px solid var(--line);border-radius:99px;padding:6px 12px;font-weight:800}
+.slist span.ok{border-color:var(--ok);color:var(--ok)}
 </style>
 </head>
 <body>
@@ -509,7 +539,32 @@ const U=[
  w:[["vacation","vacaciones"],["suitcase","valija"],["passport","pasaporte"],["flight","vuelo"],["room","habitación"],["reservation","reserva"],["tourist","turista"],["souvenir","recuerdo"],["sunscreen","protector solar"],["trip","viaje"]],
  f:[["I need my passport","Necesito mi pasaporte"],["our flight is at nine","Nuestro vuelo es a las nueve"],["the room has a view","La habitación tiene vista"],["I have a reservation","Tengo una reserva"],["we are on vacation","Estamos de vacaciones"],["my suitcase is heavy","Mi valija es pesada"]],
  st:{p:["Receptionist","Eva"],l:[["Good evening. Do you have a reservation?","Buenas noches. ¿Tiene una reserva?"],["Yes, my name is Eva Lopez.","Sí, mi nombre es Eva López."],["Perfect. Your room is 305.","Perfecto. Su habitación es la 305."],["Thank you. What time is breakfast?","Gracias. ¿A qué hora es el desayuno?"]],
-  q:[["¿Dónde está Eva?","At a hotel",["At a hotel","At the airport","At school","At a store"]],["¿Cuál es su habitación?","305",["305","503","350","530"]]]}}
+  q:[["¿Dónde está Eva?","At a hotel",["At a hotel","At the airport","At school","At a store"]],["¿Cuál es su habitación?","305",["305","503","350","530"]]]}},
+{n:"Mientras tanto",sub:"Pasado continuo: estaba haciendo",c:"#9333ea",d:"#6b21a8",
+ w:[["was","estaba"],["were","estaban"],["while","mientras"],["when","cuando"],["suddenly","de repente"],["raining","lloviendo"],["walking","caminando"],["driving","manejando"],["talking","hablando"],["studying","estudiando"]],
+ f:[["I was sleeping when you called","Estaba durmiendo cuando llamaste"],["they were talking in the kitchen","Ellos estaban hablando en la cocina"],["it was raining all day","Estuvo lloviendo todo el día"],["she was driving to work","Ella estaba manejando al trabajo"],["we were studying while he cooked","Estábamos estudiando mientras él cocinaba"],["suddenly the lights went out","De repente se cortó la luz"]],
+ st:{p:["Mia","Leo"],l:[["What were you doing last night?","¿Qué estabas haciendo anoche?"],["I was watching a movie when the power went out.","Estaba mirando una película cuando se cortó la luz."],["Oh no! What did you do?","¡Ay no! ¿Qué hiciste?"],["I was reading with my phone light.","Estaba leyendo con la luz del celular."]],
+  q:[["¿Qué estaba haciendo Leo?","Watching a movie",["Watching a movie","Cooking","Sleeping","Driving"]],["¿Qué pasó?","The power went out",["The power went out","It started to snow","His phone broke","Someone called"]]]}},
+{n:"Si…",sub:"Condicionales y consejos",c:"#0f766e",d:"#0a524c",
+ w:[["if","si"],["would","haría (condicional)"],["could","podría"],["should","debería"],["might","podría (quizás)"],["unless","a menos que"],["rich","rico"],["choose","elegir"],["advice","consejo"],["decision","decisión"]],
+ f:[["if it rains we will stay home","Si llueve, nos quedamos en casa"],["if I were rich I would travel","Si fuera rico, viajaría"],["you should drink more water","Deberías tomar más agua"],["I could help you tomorrow","Te podría ayudar mañana"],["it might snow tonight","Quizás nieve esta noche"],["what would you do","¿Qué harías?"]],
+ st:{p:["Sam","Kim"],l:[["If you could live anywhere, where would you live?","Si pudieras vivir en cualquier lugar, ¿dónde vivirías?"],["I would live near the sea.","Viviría cerca del mar."],["Why?","¿Por qué?"],["If I lived near the sea, I would swim every day.","Si viviera cerca del mar, nadaría todos los días."]],
+  q:[["¿Dónde viviría Kim?","Near the sea",["Near the sea","In the mountains","In a big city","In London"]],["¿Qué haría todos los días?","Swim",["Swim","Run","Read","Work"]]]}},
+{n:"Phrasal verbs",sub:"Verbos con partícula",c:"#c2410c",d:"#8a2e08",
+ w:[["get up","levantarse"],["turn on","prender"],["turn off","apagar"],["look for","buscar"],["give up","rendirse"],["find out","averiguar"],["pick up","pasar a buscar"],["put on","ponerse (ropa)"],["take off","sacarse (ropa)"],["come back","volver"]],
+ f:[["I get up at seven","Me levanto a las siete"],["turn off the lights please","Apagá las luces, por favor"],["I am looking for my keys","Estoy buscando mis llaves"],["never give up","Nunca te rindas"],["put on your jacket","Ponete la campera"],["I will pick you up at school","Te paso a buscar por la escuela"]],
+ st:{p:["Mom","Kid"],l:[["Get up! It's late!","¡Levantate! ¡Es tarde!"],["I can't find my shoes. I'm looking for them.","No encuentro mis zapatos. Los estoy buscando."],["They are under the bed. Put them on!","Están debajo de la cama. ¡Ponételos!"],["Thanks, mom. I'll come back at five.","Gracias, mamá. Vuelvo a las cinco."]],
+  q:[["¿Qué está buscando el chico?","His shoes",["His shoes","His keys","His phone","His jacket"]],["¿A qué hora vuelve?","At five",["At five","At seven","At noon","At three"]]]}},
+{n:"En el trabajo",sub:"Entrevistas, reuniones y mails",c:"#1d4ed8",d:"#1538a0",
+ w:[["interview","entrevista"],["salary","sueldo"],["skills","habilidades"],["deadline","fecha límite"],["schedule","horario"],["manager","gerente"],["apply","postularse"],["experience","experiencia"],["company","empresa"],["hire","contratar"]],
+ f:[["I have a job interview tomorrow","Mañana tengo una entrevista de trabajo"],["what are your skills","¿Cuáles son tus habilidades?"],["the deadline is on Friday","La fecha límite es el viernes"],["I want to apply for this job","Quiero postularme para este trabajo"],["I have five years of experience","Tengo cinco años de experiencia"],["the company will hire two people","La empresa va a contratar a dos personas"]],
+ st:{p:["Manager","Eva"],l:[["Tell me about your experience.","Contame sobre tu experiencia."],["I worked in a store for three years.","Trabajé en una tienda durante tres años."],["Why do you want this job?","¿Por qué querés este trabajo?"],["Because I love working with people.","Porque me encanta trabajar con gente."]],
+  q:[["¿Cuántos años trabajó Eva en una tienda?","Three",["Three","Five","One","Ten"]],["¿Por qué quiere el trabajo?","She loves working with people",["She loves working with people","The salary is good","It is near her house","Her friend works there"]]]}},
+{n:"Opinar",sub:"Dar tu opinión y debatir",c:"#be185d",d:"#8a1144",
+ w:[["think","pensar"],["agree","estar de acuerdo"],["disagree","no estar de acuerdo"],["opinion","opinión"],["however","sin embargo"],["because","porque"],["although","aunque"],["probably","probablemente"],["actually","en realidad"],["important","importante"]],
+ f:[["I think you are right","Creo que tenés razón"],["I agree with you","Estoy de acuerdo con vos"],["in my opinion it is too expensive","En mi opinión es muy caro"],["I disagree because it is dangerous","No estoy de acuerdo porque es peligroso"],["it is probably true","Probablemente sea verdad"],["actually I like it","En realidad me gusta"]],
+ st:{p:["Ben","Lucy"],l:[["I think phones are bad for kids.","Creo que los celulares son malos para los chicos."],["I disagree. They can help them learn.","No estoy de acuerdo. Los pueden ayudar a aprender."],["However, they use them too much.","Sin embargo, los usan demasiado."],["That's true. We need rules.","Es verdad. Necesitamos reglas."]],
+  q:[["¿Qué piensa Ben de los celulares?","They are bad for kids",["They are bad for kids","They are great","They are expensive","They are boring"]],["¿En qué terminan de acuerdo?","They need rules",["They need rules","Phones are useless","Kids should have two phones","Nothing"]]]}}
 ];
 const NODES=["lesson","lesson","story","lesson","chest"],NPU=NODES.length,TOTAL=U.length*NPU,MAXH=5;
 const TIPS=[
@@ -537,7 +592,12 @@ const TIPS=[
  ["Para lo que pasa ahora: am / is / are + verbo con -ing. «I am eating» = estoy comiendo. «What are you doing?» = ¿qué estás haciendo?",["I am reading","She is sleeping"]],
  ["Para comparar adjetivos cortos: -er + than (taller than). Para el máximo: the + -est (the tallest). Irregulares: good → better → the best.",["He is taller than me","You are the best"]],
  ["Frases para salir de un apuro: «Excuse me» para llamar la atención, «I don't understand» si no entendés y «Can you speak slowly?» para que hablen más despacio.",["Excuse me","Can you repeat, please?"]],
- ["En el aeropuerto y el hotel: «I have a reservation», «My flight is at nine». Para decir la hora se usa «at»: at nine = a las nueve.",["I have a reservation","My flight is at ten"]]
+ ["En el aeropuerto y el hotel: «I have a reservation», «My flight is at nine». Para decir la hora se usa «at»: at nine = a las nueve.",["I have a reservation","My flight is at ten"]],
+ ["Pasado continuo: was / were + verbo con -ing para algo que estaba pasando: «I was sleeping when you called». Con «while» unís dos acciones al mismo tiempo.",["I was reading","They were playing"]],
+ ["Condicionales: «If + presente, will…» para algo posible (If it rains, we will stay). «If + pasado, would…» para algo imaginario (If I were rich, I would travel). should = debería.",["If I were you, I would go","You should rest"]],
+ ["Los phrasal verbs son verbos + partícula que cambian el significado: turn on (prender), turn off (apagar), give up (rendirse). Hay que aprenderlos como palabras nuevas.",["Turn on the TV","Don't give up"]],
+ ["En una entrevista: «I have … years of experience», «My skills are…», «I want to apply for…». deadline = fecha límite.",["I have experience","When is the deadline?"]],
+ ["Para opinar: «I think…», «In my opinion…». Para responder: «I agree» / «I disagree». Para contrastar: «however» (sin embargo) y «although» (aunque).",["I think so","I agree with you"]]
 ];
 
 /* ================= ÍCONOS Y MASCOTA ================= */
@@ -610,7 +670,7 @@ const app=document.getElementById("app");
 
 /* ================= ESTADO ================= */
 const DEF={done:0,xp:0,gems:100,streak:0,last:"",hearts:MAXH,hlast:0,todayXp:0,xday:"",week:"",weekXp:0,league:0,chests:0,perfect:0,stories:0,lessons:0,bestCombo:0,freeze:0,sound:true,ach:[],
- name:"",goal:20,rem:{on:0,h:19},theme:"auto",big:0,act:{},mins:0,talk:{},legend:{},rh:[],seen:{},diff:"auto",readQ:true,str:{},best:0,skin:"hornero",acc:"",owned:[],boost:0,onboard:false,hist:{},weak:[],weakF:[],qd:"",qp:{},qc:[]};
+ name:"",goal:20,lst:{},games:0,rem:{on:0,h:19},theme:"auto",big:0,act:{},mins:0,talk:{},legend:{},rh:[],seen:{},diff:"auto",readQ:true,str:{},best:0,skin:"hornero",acc:"",owned:[],boost:0,onboard:false,hist:{},weak:[],weakF:[],qd:"",qp:{},qc:[]};
 let S=JSON.parse(JSON.stringify(DEF));
 try{const r=JSON.parse(localStorage.getItem("habla-ingles-2")||"null");if(r)S=Object.assign(S,r)}catch(e){}
 const save=()=>{try{localStorage.setItem("habla-ingles-2",JSON.stringify(S))}catch(e){}};
@@ -687,7 +747,7 @@ function confetti(){const cs=["#ffc531","#2f5bea","#ff5a5f","#1f9d55","#7fd3ff"]
 /* ================= LOGROS ================= */
 const ACH=[["first","Primer paso","Completá tu primera lección",1,()=>S.lessons,"#2f5bea"],["s3","En llamas","Llegá a una racha de 3 días",3,()=>S.streak,"#ff9f1c"],["s7","Imparable","Llegá a una racha de 7 días",7,()=>S.streak,"#ff5a5f"],
  ["perf","Perfeccionista","Terminá 3 lecciones sin errores",3,()=>S.perfect,"#1f9d55"],["xp","Sabio","Ganá 500 XP",500,()=>S.xp,"#8a5cf0"],["unit","Explorador","Terminá una unidad completa",1,()=>Math.floor(S.done/NPU),"#0f9bb0"],
- ["story","Cuentacuentos","Completá 3 historias",3,()=>S.stories,"#e0457b"],["chest","Coleccionista","Abrí 5 cofres",5,()=>S.chests,"#d98c35"],["combo","Racha perfecta","Acertá 10 seguidas en una lección",10,()=>S.bestCombo,"#e5a100"],["chal","Relámpago","Uní 15 pares en un desafío",15,()=>S.best,"#ffc531"],["talk","Conversador","Completá 3 charlas",3,()=>Object.keys(S.talk).length,"#8a5cf0"],["all","Políglota","Terminá el curso completo",TOTAL,()=>S.done,"#b5398f"]];
+ ["story","Cuentacuentos","Completá 3 historias",3,()=>S.stories,"#e0457b"],["chest","Coleccionista","Abrí 5 cofres",5,()=>S.chests,"#d98c35"],["combo","Racha perfecta","Acertá 10 seguidas en una lección",10,()=>S.bestCombo,"#e5a100"],["chal","Relámpago","Uní 15 pares en un desafío",15,()=>S.best,"#ffc531"],["talk","Conversador","Completá 3 charlas",3,()=>Object.keys(S.talk).length,"#8a5cf0"],["game","Jugador","Ganá 5 mini juegos",5,()=>S.games||0,"#ff5a5f"],["all","Políglota","Terminá el curso completo",TOTAL,()=>S.done,"#b5398f"]];
 function checkAch(){const n=[];ACH.forEach(a=>{if(!S.ach.includes(a[0])&&a[4]()>=a[3]){S.ach.push(a[0]);n.push(a);S.gems+=20}});return n}
 
 /* ================= PANTALLAS ================= */
@@ -722,7 +782,7 @@ function shell(inner){app.innerHTML=topbar()+`<div class="view">${inner}</div>`+
  app.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{tab=b.dataset.t;SND.tap();show()});
  document.getElementById("hb").onclick=()=>{tab="shop";show()};
  document.getElementById("thm").onclick=()=>{S.theme=isDark()?"light":"dark";save();applyTheme();SND.tap();const y=scrollY;show();scrollTo(0,y)};window.scrollTo(0,0)}
-function show(){regen();if(!S.onboard)return onboard();({learn,quests:questsV,league,profile,shop,words,practice,talk})[tab]();if(notice){const m=notice;notice="";modal("Aviso",esc(m),"Entendido")}}
+function show(){regen();if(!S.onboard)return onboard();({learn,quests:questsV,league,profile,shop,words,practice,talk,stories,games})[tab]();if(notice){const m=notice;notice="";modal("Aviso",esc(m),"Entendido")}}
 
 function onboard(){
  const G=[[10,"Casual","5 min por día"],[20,"Normal","10 min por día"],[30,"En serio","15 min por día"],[50,"Intenso","20 min por día"]];let goal=20;
@@ -739,7 +799,7 @@ function onboard(){
  document.getElementById("st").onclick=()=>{S.name=document.getElementById("nm").value.trim().slice(0,20);S.goal=goal;S.onboard=true;save();SND.win();if(kn)return startPlace();tab="learn";show()};
 }
 
-const UE=["👋","🍎","🏡","🚆","👕","⏰","🌅","🏫","🩺","📜","🛍️","🌦️","🛋️","😊","🚀","📱","🦁","⚽","🍽️","🌳","❓","⏳","📏","💬","🏝️"];
+const UE=["👋","🍎","🏡","🚆","👕","⏰","🌅","🏫","🩺","📜","🛍️","🌦️","🛋️","😊","🚀","📱","🦁","⚽","🍽️","🌳","❓","⏳","📏","💬","🏝️","🕰️","🔀","🧩","💼","🗣️"];
 function deco(ui,u){const c=u.c,v=ui%4;
  const tree=`<svg viewBox="0 0 80 100"><ellipse cx="40" cy="96" rx="26" ry="4" fill="#000" opacity=".08"/><rect x="36" y="58" width="8" height="38" rx="3" fill="#a5714a"/><circle cx="40" cy="44" r="26" fill="${c}" opacity=".85"/><circle cx="28" cy="52" r="16" fill="${c}"/><circle cx="54" cy="54" r="14" fill="${c}" opacity=".9"/><circle cx="32" cy="34" r="8" fill="#fff" opacity=".25"/></svg>`;
  const sun=`<svg viewBox="0 0 80 100"><circle cx="40" cy="36" r="20" fill="#ffc531"/><g stroke="#ffc531" stroke-width="4" stroke-linecap="round">${[0,45,90,135,180,225,270,315].map(a=>`<path d="M${40+28*Math.cos(a*Math.PI/180)} ${36+28*Math.sin(a*Math.PI/180)}l${6*Math.cos(a*Math.PI/180)} ${6*Math.sin(a*Math.PI/180)}"/>`).join("")}</g><ellipse cx="36" cy="80" rx="30" ry="11" fill="${c}" opacity=".35"/><ellipse cx="52" cy="74" rx="20" ry="10" fill="${c}" opacity=".35"/></svg>`;
@@ -768,6 +828,8 @@ function learn(){
   <button class="review pr" id="prac"><span class="ic" style="background:#1f9d55">${I.target}</span><span><b>Práctica</b><small>Escucha, pronunciación, escritura y repaso · ${S.hearts<MAXH?"+1 vida al terminar":"no gasta vidas"}</small></span></button>
   <div class="tools"><button class="review" id="chal"><span class="ic" style="background:var(--sun);color:#5a3d00">${I.bolt}</span><span><b>Desafío</b><small>60 s · récord ${S.best}</small></span></button>
   <button class="review" id="wds"><span class="ic" style="background:var(--blue)">${I.book}</span><span><b>Mis palabras</b><small>${known().length} aprendidas</small></span></button>
+  <button class="review" id="gms"><span class="ic" style="background:#ff5a5f">${I.target}</span><span><b>Juegos</b><small>Ahorcado, memotest y sopa de letras</small></span></button>
+  <button class="review" id="sts"><span class="ic" style="background:#0f9bb0">${I.book}</span><span><b>Historias</b><small>${Object.keys(S.lst).length} de ${LS.length} leídas</small></span></button>
   <button class="review" id="tlk" style="grid-column:1/-1"><span class="ic" style="background:#8a5cf0">${I.chat}</span><span><b>Conversá</b><small>Charlas en situaciones reales · ${Object.keys(S.talk).length} de ${SC.length} hechas</small></span></button></div>`;
  U.forEach((u,ui)=>{
   const udone=Math.max(0,Math.min(NPU,S.done-ui*NPU));
@@ -793,6 +855,8 @@ function learn(){
  });
  document.getElementById("chal").onclick=()=>{SND.tap();challenge()};
  document.getElementById("wodsay").onclick=ev=>{const b=ev.currentTarget;say([[b.dataset.w,"en"],[b.dataset.e,"es"]])};
+ document.getElementById("gms").onclick=()=>{SND.tap();tab="games";show()};
+ document.getElementById("sts").onclick=()=>{SND.tap();tab="stories";show()};
  document.getElementById("tlk").onclick=()=>{SND.tap();tab="talk";show()};
  document.getElementById("prac").onclick=()=>{SND.tap();tab="practice";show()};
  app.querySelectorAll("[data-leg]").forEach(b=>b.onclick=()=>{const ui=+b.dataset.leg;SND.tap();
@@ -876,6 +940,7 @@ function profile(){
   <div class="toggle"><span>Tamaño de letra</span><span class="seg"><button class="${S.big?"":"on"}" data-big="0">Normal</button><button class="${S.big?"on":""}" data-big="1">Grande</button></span></div>
   <div class="toggle">Efectos de sonido<button class="ghost" id="snd">${S.sound?"Activados":"Desactivados"}</button></div>
   <div class="toggle">Leer las preguntas en español<button class="ghost" id="rq">${S.readQ?"Activado":"Desactivado"}</button></div>
+  <div class="toggle"><span>Copia de seguridad<small class="vinfo">Guardá un código para recuperar tu progreso</small></span><span class="seg"><button id="bko">Guardar</button><button id="bki">Restaurar</button></span></div>
   <div class="toggle">Nombre<button class="ghost" id="ren">Cambiar</button></div>
   <div class="toggle"><span>Voces<small class="vinfo" id="vinfo">${window.Android?"Voz de Android en inglés y español":!TTS.ok?"Esta pantalla no tiene voz":"Inglés: "+(TTS.voice?esc(TTS.voice.name):"no instalada")+" · Español: "+(TTS.es?esc(TTS.es.name):"no instalada")}</small></span><button class="ghost" id="vtest">Probar voz</button></div>
   <p class="foot">${window.Android?`Versión ${esc(APPV)} · se actualiza sola desde internet<br><button class="ghost" id="updchk" style="margin:8px 0">Buscar actualizaciones</button><br>`:""}El progreso se guarda en ${window.Android?"este celular":"este navegador"}.<br><button class="ghost" id="reset" style="margin-top:8px">Reiniciar progreso</button></p></div>`;
@@ -884,6 +949,7 @@ function profile(){
  document.getElementById("snd").onclick=()=>{S.sound=!S.sound;save();profile()};
  app.querySelectorAll("[data-theme-set]").forEach(b=>b.onclick=()=>{S.theme=b.dataset.themeSet;save();applyTheme();const y=scrollY;profile();scrollTo(0,y)});
  app.querySelectorAll("[data-rem]").forEach(b=>b.onclick=()=>{const h=+b.dataset.rem;S.rem=h?{on:1,h}:{on:0,h:S.rem.h};save();try{Android.setReminder(!!h,S.rem.h,0)}catch(e){}SND.tap();const y=scrollY;profile();scrollTo(0,y)});
+ document.getElementById("bko").onclick=backupOut;document.getElementById("bki").onclick=backupIn;
  app.querySelectorAll("[data-big]").forEach(b=>b.onclick=()=>{S.big=+b.dataset.big;save();applyTheme();const y=scrollY;profile();scrollTo(0,y)});
  app.querySelectorAll("[data-diff]").forEach(b=>b.onclick=()=>{S.diff=b.dataset.diff;save();SND.tap();profile()});
  const ck=document.getElementById("updchk");if(ck)ck.onclick=()=>{try{Android.checkNow()}catch(e){}ck.textContent="Buscando…";setTimeout(()=>{if(!document.getElementById("upd"))ck.textContent="Ya tenés la última versión"},6000)};
@@ -1035,7 +1101,7 @@ phone:"📱",message:"💬",password:"🔑",screen:"🖥️",battery:"🔋",app:
 lion:"🦁",horse:"🐴",bird:"🐦",fish:"🐟",cow:"🐮",rabbit:"🐰",bear:"🐻",monkey:"🐵",snake:"🐍",duck:"🦆",
 ball:"⚽",game:"🏟️",win:"🏆",swim:"🏊",coach:"📣",player:"🧍",
 menu:"📋",waiter:"🤵",bill:"🧾",dessert:"🍰",soup:"🍲",salad:"🥗",meat:"🥩",fork:"🍴",glass:"🥃",
-tree:"🌳",flower:"🌸",river:"🏞️",mountain:"⛰️",sea:"🌊",star:"⭐",moon:"🌕",forest:"🌲",question:"❓",answer:"💡",eating:"🍽️",reading:"📖",playing:"⚽",sleeping:"😴",cooking:"🍳",listening:"🎧",watching:"📺",waiting:"⏳",bigger:"🐘",smaller:"🐭",faster:"🚀",older:"👴",younger:"👶",taller:"🦒","the best":"🥇",help:"🆘",welcome:"🤗","good luck":"🍀",vacation:"🏝️",suitcase:"🧳",passport:"🛂",flight:"✈️",reservation:"📑",tourist:"📸",souvenir:"🎁",sunscreen:"🧴",trip:"🗺️"};
+tree:"🌳",flower:"🌸",river:"🏞️",mountain:"⛰️",sea:"🌊",star:"⭐",moon:"🌕",forest:"🌲",question:"❓",answer:"💡",eating:"🍽️",reading:"📖",playing:"⚽",sleeping:"😴",cooking:"🍳",listening:"🎧",watching:"📺",waiting:"⏳",bigger:"🐘",smaller:"🐭",faster:"🚀",older:"👴",younger:"👶",taller:"🦒","the best":"🥇",help:"🆘",welcome:"🤗","good luck":"🍀",vacation:"🏝️",suitcase:"🧳",passport:"🛂",flight:"✈️",reservation:"📑",tourist:"📸",souvenir:"🎁",sunscreen:"🧴",trip:"🗺️",raining:"🌧️",walking:"🚶",driving:"🚗",talking:"🗣️",studying:"📚",suddenly:"⚡",rich:"🤑",advice:"💡",decision:"🤔","get up":"🛏️","turn on":"💡","turn off":"🌑","look for":"🔍","give up":"🏳️","pick up":"🚗","put on":"🧥","take off":"👟",interview:"🤝",salary:"💰",skills:"🛠️",deadline:"⏰",schedule:"🗓️",manager:"👩‍💼",company:"🏢",hire:"✍️",think:"🤔",agree:"👍",disagree:"👎",opinion:"💬",important:"❗"};
 /* diccionario de pistas (tocá una palabra para ver qué significa) */
 const HE={mi:"my",tu:"your",es:"is",esta:"is / this",son:"are",el:"the / he",la:"the",los:"the",las:"the",un:"a",una:"a",yo:"I",tengo:"I have",tiene:"has",y:"and",con:"with",de:"of / from",en:"in / on / at",muy:"very",quiero:"I want",necesito:"I need",me:"me",a:"to",por:"for / by",gusto:"pleasure",mucho:"much / a lot",muchas:"many",ella:"she",grande:"big",pequena:"small",bueno:"good",aqui:"here",sobre:"on",frio:"cold",hace:"it is (clima)",que:"what",donde:"where",como:"how / I eat",cuanto:"how much",cuesta:"costs",puedo:"can I",pagar:"to pay",voy:"I am going",vamos:"we go / let's",nos:"us",vemos:"see",tambien:"too",hoy:"today",bebo:"I drink",tiene:"has",todos:"every / all",dias:"days",lunes:"Monday",ayer:"yesterday",fui:"I went",comi:"I ate",vi:"I saw",pelicula:"movie",anoche:"last night",playa:"beach",duele:"hurts",estoy:"I am",cansado:"tired",enferma:"sick",lavate:"wash",manos:"hands",toma:"take",esa:"that",ver:"to see",viajar:"to travel",proximo:"next",sueno:"dream",pronto:"soon",lloviendo:"raining",calor:"heat",nieve:"snow",sol:"sun",salio:"came out",rota:"broken",abri:"open",cerra:"close",puerta:"door",ventana:"window",feliz:"happy",triste:"sad",porque:"why / because",enojada:"angry",conmigo:"with me",un_poco:"a little",poco:"little",calma:"calm",mantene:"keep",telefono:"phone",bateria:"battery",mandame:"send me",olvide:"I forgot",contrasena:"password",saca:"take",foto:"photo",llamame:"call me",mas:"more",tarde:"late / afternoon",caballo:"horse",rapido:"fast",veo:"I see",oso:"bear",pajaro:"bird",volar:"fly",peces:"fish",viven:"live",agua:"water",mono:"monkey",come:"eats",miedo:"fear",serpientes:"snakes",nuestro:"our",equipo:"team",gano:"won",partido:"game",nado:"I swim",mananas:"mornings",buen:"good",jugador:"player",entrenador:"coach",practicamos:"we practice",sabados:"Saturdays",pasame:"pass me",pelota:"ball",menu:"menu",cuenta:"bill",quisiera:"I would like",sopa:"soup",caliente:"hot",queremos:"we want",postre:"dessert",tenedor:"fork",cielo:"sky",azul:"blue",encantan:"love",montanas:"mountains",rio:"river",largo:"long",mira:"look",luna:"moon",hay:"there is / are",estrellas:"stars",caminamos:"we walk",bosque:"forest",siempre:"always",nunca:"never",desayuno:"breakfast / I have breakfast",corro:"I run",lee:"reads",noche:"night",ducha:"shower",doy:"I give / take",trabajamos:"we work",soy:"I am",estudiante:"student",profesor:"teacher",amable:"nice",reunion:"meeting",jefe:"boss",ocupado:"busy",estudio:"I study",ingles:"English",libro:"book",mesa:"table",camisa:"shirt",roja:"red",zapatos:"shoes",negros:"black",usa:"wears",vestido:"dress",campera:"jacket",verde:"green",gusta:"like",sombrero:"hat",gato:"cat",blanco:"white",perro:"dog",madre:"mother",padre:"father",hermana:"sister",familia:"family",casa:"house / home",pequena:"small",nombre:"name",hola:"hello",amigo:"friend",gracias:"thanks",si:"yes",favor:"favor (please)",buenos:"good",buenas:"good",noches:"night",manana:"morning / tomorrow",pan:"bread",manzana:"apple",cafe:"coffee",leche:"milk",quiero:"I want",pollo:"chicken",arroz:"rice",jugo:"juice",dos:"two",gatos:"cats",trabajo:"I work / job",diez:"ten",horas:"hours",hora:"hour / time",semana:"week",siete:"seven",hotel:"hotel",boleto:"ticket",hermosa:"beautiful",dobla:"turn",izquierda:"left",ciudad:"city",aeropuerto:"airport",lejos:"far",barata:"cheap",caros:"expensive",tarjeta:"card",bolsa:"bag",tienda:"store",abierta:"open",cocina:"kitchen",cama:"bed",jardin:"garden",silla:"chair",te:"you",llame:"call",ayudar:"help",aprender:"learn"};
 const HS={my:"mi",your:"tu",is:"es / está",are:"son / están",the:"el / la",a:"un / una",an:"un / una",i:"yo",have:"tengo / tener",has:"tiene",and:"y",with:"con",of:"de",in:"en",on:"sobre / en",at:"en",very:"muy",want:"querer",need:"necesitar",to:"a / para",she:"ella",he:"él",we:"nosotros",it:"eso",big:"grande",small:"pequeño",good:"bueno",here:"aquí",home:"casa",nice:"lindo / amable",meet:"conocer",you:"vos / tú",too:"también",what:"qué",where:"dónde",how:"cómo",much:"mucho",many:"muchos",this:"este / esta",that:"ese / esa",can:"poder",do:"hacer",did:"(pasado de do)",go:"ir",see:"ver",look:"mirar",like:"gustar",every:"cada / todos",day:"día",days:"días",night:"noche",morning:"mañana",will:"(futuro)",going:"yendo / voy a",there:"ahí",not:"no",me:"me / mí",later:"más tarde",fast:"rápido",live:"vivir",eat:"comer",eats:"come",drink:"beber",very_:"muy",am:"soy / estoy",was:"era / estuve",were:"eran",be:"ser / estar",please:"por favor",thank:"agradecer",help:"ayudar",can_:"puedo",for:"para",by:"por / con",from:"de",our:"nuestro",them:"ellos",they:"ellos",his:"su (de él)",her:"su (de ella)",some:"algo de",more:"más",far:"lejos",close:"cerca / cerrar",open:"abrir",take:"tomar / llevar",turn:"doblar",straight:"derecho",time:"hora / tiempo",o:"",clock:"reloj",send:"mandar",forgot:"olvidé",feel:"sentir",better:"mejor",about:"sobre",why:"por qué",all:"todos",little:"poco",stay:"quedarse",dark:"oscuro",new:"nuevo",excuse:"disculpar",station:"estación",anything:"algo",else:"más",ready:"listo",would:"(condicional)",idea:"idea",ice:"hielo",cream:"crema",swim:"nadar",report:"informe",great:"genial",perfect:"perfecto",these:"estos",with_:"con",late:"tarde",star:"estrella",stars:"estrellas",hurts:"duele",wears:"usa",lets:"vamos a",let:"dejar",out:"afuera",windy:"ventoso",raining:"lloviendo",broken:"roto",clean:"limpiar",mom:"mamá",dad:"papá",animal:"animal",strong:"fuerte",next:"al lado / próximo",plans:"planes",london:"Londres",wow:"¡guau!",photos:"fotos",later_:"luego",sorry:"perdón",no:"no / ningún",yes:"sí",bananas:"bananas",snakes:"serpientes",scared:"asustado",won:"ganó",football:"fútbol",movie:"película",pizza:"pizza",went:"fui",ate:"comí",saw:"vi",bought:"compró",visited:"visité",played:"jugamos",cats:"gatos",hours:"horas",seven:"siete",days_:"días",english:"inglés",table:"mesa",busy:"ocupado",today:"hoy",tomorrow:"mañana",forty:"cuarenta",dollars:"dólares",cash:"efectivo",check:"cheque",umbrella:"paraguas",kitchen:"cocina"};
@@ -1231,6 +1297,178 @@ function startTalk(c){
  npc();
 }
 
+/* ================= HISTORIAS LARGAS ================= */
+const LS=[
+ {id:"school",t:"El primer día",sub:"Ana empieza en una escuela nueva",need:2,ic:"🏫",parts:[
+  ["l","Teacher","Good morning, class! We have a new student today.","¡Buen día, clase! Hoy tenemos una alumna nueva."],
+  ["l","Ana","Hi everyone. My name is Ana. I am from Argentina.","Hola a todos. Me llamo Ana. Soy de Argentina."],
+  ["l","Ben","Hi Ana! Do you want to sit with me?","¡Hola Ana! ¿Querés sentarte conmigo?"],
+  ["q","¿De dónde es Ana?","Argentina",["Argentina","Canada","Spain","Mexico"]],
+  ["l","Ana","Yes, thank you! What is your name?","¡Sí, gracias! ¿Cómo te llamás?"],
+  ["l","Ben","I'm Ben. I like music and football.","Soy Ben. Me gusta la música y el fútbol."],
+  ["l","Ana","Me too! I play football with my brother.","¡A mí también! Juego al fútbol con mi hermano."],
+  ["q","¿Qué les gusta a los dos?","Football",["Football","Cooking","Swimming","Dancing"]],
+  ["l","Teacher","Ana, open your book on page ten, please.","Ana, abrí tu libro en la página diez, por favor."],
+  ["l","Ana","Sorry, I don't have a book.","Perdón, no tengo libro."],
+  ["l","Ben","No problem. We can share my book.","No hay problema. Podemos compartir mi libro."],
+  ["q","¿Cómo ayuda Ben a Ana?","He shares his book",["He shares his book","He buys a book","He calls the teacher","He goes home"]]]},
+ {id:"bday",t:"El cumpleaños de Tom",sub:"Torta, regalos y una foto",need:5,ic:"🎂",parts:[
+  ["l","Mia","Happy birthday, Tom! How old are you today?","¡Feliz cumpleaños, Tom! ¿Cuántos años cumplís hoy?"],
+  ["l","Tom","I'm twelve! Thank you for coming.","¡Cumplo doce! Gracias por venir."],
+  ["l","Mia","This is for you. Open it!","Esto es para vos. ¡Abrilo!"],
+  ["q","¿Cuántos años cumple Tom?","Twelve",["Twelve","Ten","Eleven","Twenty"]],
+  ["l","Tom","Wow, a blue jacket! I love it.","¡Guau, una campera azul! Me encanta."],
+  ["l","Mom","The cake is ready! Who wants chocolate cake?","¡La torta está lista! ¿Quién quiere torta de chocolate?"],
+  ["l","Mia","Me, please! I love chocolate.","¡Yo, por favor! Me encanta el chocolate."],
+  ["q","¿Qué le regaló Mia?","A blue jacket",["A blue jacket","A red hat","A book","A ball"]],
+  ["l","Tom","Let's take a photo with everyone.","Saquemos una foto con todos."],
+  ["l","Mom","Smile! One, two, three!","¡Sonrían! ¡Uno, dos, tres!"],
+  ["q","¿De qué es la torta?","Chocolate",["Chocolate","Apple","Cheese","Lemon"]]]},
+ {id:"london",t:"Perdidos en Londres",sub:"Leo y Kim buscan su hotel",need:9,ic:"🗺️",parts:[
+  ["l","Leo","Kim, I think we are lost.","Kim, creo que estamos perdidos."],
+  ["l","Kim","Let's look at the map. Where is the hotel?","Miremos el mapa. ¿Dónde está el hotel?"],
+  ["l","Leo","My phone has no battery. I can't see the map.","Mi celular no tiene batería. No puedo ver el mapa."],
+  ["q","¿Por qué Leo no puede ver el mapa?","His phone has no battery",["His phone has no battery","It's raining","He lost his glasses","The map is old"]],
+  ["l","Kim","Excuse me! Can you help us? We are looking for the Park Hotel.","¡Disculpe! ¿Nos puede ayudar? Estamos buscando el Park Hotel."],
+  ["l","Woman","Of course. Go straight and turn left at the bank.","Claro. Sigan derecho y doblen a la izquierda en el banco."],
+  ["l","Kim","Is it far?","¿Está lejos?"],
+  ["l","Woman","No, it's about five minutes walking.","No, son unos cinco minutos caminando."],
+  ["q","¿Dónde tienen que doblar?","At the bank",["At the bank","At the park","At the station","At the school"]],
+  ["l","Leo","Thank you so much! You are very kind.","¡Muchas gracias! Es muy amable."],
+  ["q","¿Cuánto tardan caminando?","About five minutes",["About five minutes","One hour","Ten minutes","Two hours"]]]},
+ {id:"move",t:"La mudanza",sub:"Lucy se muda a una casa nueva",need:14,ic:"📦",parts:[
+  ["l","Lucy","We are moving to a new house next week!","¡Nos mudamos a una casa nueva la semana que viene!"],
+  ["l","Sam","Really? Is it bigger than your apartment?","¿En serio? ¿Es más grande que tu departamento?"],
+  ["l","Lucy","Yes, it has three bedrooms and a garden.","Sí, tiene tres dormitorios y un jardín."],
+  ["q","¿Cuándo se muda Lucy?","Next week",["Next week","Tomorrow","Next year","Today"]],
+  ["l","Sam","I can help you with the boxes.","Te puedo ayudar con las cajas."],
+  ["l","Dad","That would be great, Sam. We need strong hands!","¡Sería genial, Sam! ¡Necesitamos manos fuertes!"],
+  ["l","Lucy","And then we can have pizza in the garden.","Y después podemos comer pizza en el jardín."],
+  ["q","¿Qué tiene la casa nueva?","Three bedrooms and a garden",["Three bedrooms and a garden","A pool","Two kitchens","A big garage"]],
+  ["l","Sam","Deal! I love pizza.","¡Trato hecho! Me encanta la pizza."],
+  ["q","¿Cómo va a ayudar Sam?","With the boxes",["With the boxes","Cooking","Driving the car","Painting the walls"]]]}
+];
+HIGH.push("Woman");
+function stories(){
+ let h=`<div class="page"><button class="ghost" id="back" style="margin-bottom:12px">← Volver</button><h2>Historias</h2><p class="sub">Historias más largas con voces. Leé, escuchá y respondé las preguntas que aparecen en el medio.</p><div class="sclist">`;
+ LS.forEach(c=>{const open=S.done>=c.need*NPU,st=S.lst[c.id]||0;
+  h+=`<button class="scard${open?"":" off"}" data-ls="${c.id}"><span class="scic">${open?c.ic:I.lock}</span><span class="sct"><b>${c.t}</b><small>${open?c.sub:`Se desbloquea en la unidad ${c.need+1}`}</small></span><span class="stars">${[1,2,3].map(i=>`<i class="${i<=st?"on":""}">${I.star}</i>`).join("")}</span></button>`});
+ shell(h+`</div></div>`);
+ app.querySelectorAll("[data-ls]").forEach(b=>b.onclick=()=>{const c=LS.find(x=>x.id===b.dataset.ls);if(S.done<c.need*NPU)return modal("Todavía no",`Esta historia se desbloquea al llegar a la unidad ${c.need+1}.`,"OK",null,false,pico(""));SND.tap();readStory(c)});
+ document.getElementById("back").onclick=()=>{tab="learn";show()};
+}
+function readStory(c){
+ let i=0,miss=0;const cast=[...new Set(c.parts.filter(p=>p[0]==="l").map(p=>p[1]))];
+ app.innerHTML=`<div class="lesson"><div class="lhead"><button class="x" id="quit" aria-label="Salir">✕</button><div class="bar"><i id="tb" style="width:0%"></i></div><span class="stat">${c.ic}</span></div>
+  <div class="body"><h3 style="margin-bottom:10px">${c.t}</h3><div class="chat talk" id="tk"></div><div id="tops"></div></div>
+  <div class="check" id="sbar"><button class="go" id="snext">CONTINUAR</button></div></div>`;
+ const tk=document.getElementById("tk"),tops=document.getElementById("tops"),nx=document.getElementById("snext");
+ document.getElementById("quit").onclick=()=>{tab="stories";show()};
+ const step=()=>{document.getElementById("tb").style.width=i/c.parts.length*100+"%";
+  if(i>=c.parts.length)return fin();const p=c.parts[i];
+  if(p[0]==="l"){const r=cast.indexOf(p[1])%2===1;
+   tk.insertAdjacentHTML("beforeend",`<div class="line${r?" r":""}"><span class="av fav">${face(p[1])}</span><div class="tbub"><small>${esc(p[1])}</small><span>${hintify(p[2],"en")}</span><button class="mini" aria-label="Escuchar">${I.spk}</button><small class="es" hidden>${esc(p[3])}</small><button class="tr">Ver traducción</button></div></div>`);
+   const last=tk.lastElementChild;bindHints(last);last.querySelector(".mini").onclick=()=>say([[p[2],"en",false,p[1]]]);
+   last.querySelector(".tr").onclick=ev=>{last.querySelector(".es").hidden=false;ev.target.remove()};
+   say([[p[2],"en",false,p[1]]]);last.scrollIntoView({block:"nearest",behavior:"smooth"});i++;nx.disabled=false;nx.hidden=false}
+  else{nx.hidden=true;
+   tops.innerHTML=`<div class="sq"><b>${esc(p[1])}</b><div class="opts">${shuf(p[3]).map(o=>`<button class="opt" data-o="${esc(o)}">${esc(o)}</button>`).join("")}</div></div>`;
+   speakEs(p[1]);tops.scrollIntoView({block:"nearest",behavior:"smooth"});
+   tops.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{if(b.dataset.o===p[2]){SND.ok();b.classList.add("ok");speak(p[2]);setTimeout(()=>{tops.innerHTML="";i++;step()},700)}
+    else{SND.bad();miss++;b.classList.add("bad");b.disabled=true}})}};
+ const fin=()=>{const stars=miss===0?3:miss<=2?2:1;S.lst[c.id]=Math.max(S.lst[c.id]||0,stars);S.stories++;
+  const xp=15*(Date.now()<S.boost?2:1);S.xp+=xp;S.todayXp+=xp;S.weekXp+=xp;S.gems+=5;S.hist[day()]=(S.hist[day()]||0)+xp;markActive();S.mins+=3;qadd("xp",xp);qadd("story",1);const na=checkAch();save();SND.win();confetti();
+  app.innerHTML=`<div class="lesson"><div class="end"><div class="burst"><div class="rays"></div>${pico("happy")}</div><h3>¡Historia terminada!</h3><div class="stars big">${[1,2,3].map(k=>`<i class="${k<=stars?"on":""}">${I.star}</i>`).join("")}</div>
+   <div class="chips"><div class="chip"><small>XP</small>+${xp}</div><div class="chip"><small>Gemas</small>+5</div></div>${na.map(a=>`<div class="newach">Logro desbloqueado: ${esc(a[1])} (+20 gemas)</div>`).join("")}
+   <button class="go" id="h" style="max-width:320px">CONTINUAR</button></div></div>`;document.getElementById("h").onclick=()=>{tab="stories";show()}};
+ nx.onclick=()=>{nx.disabled=true;step()};step();
+}
+
+/* ================= MINI JUEGOS ================= */
+const gameWords=(max)=>unlockedW().filter(w=>/^[a-z]+$/i.test(w[0])&&w[0].length>=3&&w[0].length<=(max||10));
+function gamePool(n,max){let p=gameWords(max);if(p.length<n)p=U.slice(0,3).flatMap(u=>u.w).filter(w=>/^[a-z]+$/i.test(w[0])&&w[0].length>=3&&w[0].length<=(max||10));return pick(p,n)}
+function gameWin(name,msg,again){const xp=5*(Date.now()<S.boost?2:1);S.xp+=xp;S.todayXp+=xp;S.weekXp+=xp;S.hist[day()]=(S.hist[day()]||0)+xp;markActive();S.mins+=2;S.games=(S.games||0)+1;qadd("xp",xp);const na=checkAch();save();SND.win();confetti();
+ app.innerHTML=`<div class="lesson"><div class="end"><div class="burst"><div class="rays"></div>${pico("happy")}</div><h3>¡Ganaste!</h3><p>${msg}</p><div class="chips"><div class="chip"><small>XP</small>+${xp}</div></div>${na.map(a=>`<div class="newach">Logro desbloqueado: ${esc(a[1])} (+20 gemas)</div>`).join("")}
+  <button class="go" id="again" style="max-width:320px">JUGAR DE NUEVO</button><button class="go" id="h" style="max-width:320px;margin-top:10px;background:var(--line);color:var(--ink);box-shadow:none">VOLVER</button></div></div>`;
+ document.getElementById("again").onclick=again;document.getElementById("h").onclick=()=>{tab="games";show()}}
+function gameHead(title){return `<div class="lhead"><button class="x" id="quit" aria-label="Salir">✕</button><h3 style="flex:1;margin:0;font:600 22px Fredoka,sans-serif">${title}</h3></div>`}
+function games(){
+ const G=[["hang","Ahorcado","Adiviná la palabra letra por letra antes de que Pico se quede sin globos.","🎈","#ff5a5f"],["memo","Memotest","Encontrá las parejas: cada palabra en inglés con su traducción.","🃏","#2f5bea"],["soup","Sopa de letras","Buscá las palabras en inglés escondidas en la grilla.","🔤","#1f9d55"]];
+ let h=`<div class="page"><button class="ghost" id="back" style="margin-bottom:12px">← Volver</button><h2>Juegos</h2><p class="sub">Jugá con las palabras que ya aprendiste. Cada partida ganada da 5 XP.</p>
+  <div class="sclist">${G.map(g=>`<button class="scard" data-g="${g[0]}"><span class="scic" style="background:${g[4]}22">${g[3]}</span><span class="sct"><b>${g[1]}</b><small>${g[2]}</small></span></button>`).join("")}</div></div>`;
+ shell(h);app.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{SND.tap();({hang,memo,soup})[b.dataset.g]()});
+ document.getElementById("back").onclick=()=>{tab="learn";show()};
+}
+function hang(){
+ const w=gamePool(1,10)[0],word=w[0].toLowerCase();let lives=6,got=new Set();
+ const draw=()=>{const shown=word.split("").map(c=>got.has(c)?c:"_");const won=!shown.includes("_");
+  app.innerHTML=`<div class="lesson">${gameHead("Ahorcado")}<div class="body" style="text-align:center">
+   <div class="balloons">${Array.from({length:6},(_,i)=>`<span class="bal${i<lives?"":" pop"}" style="--h:${i*55}"></span>`).join("")}${pico(lives<=2?"sad":"")}</div>
+   <p class="hint" style="margin:6px 0 2px">Pista</p><div class="clue">${EMO[w[0]]?`<span class="emo">${EMO[w[0]]}</span>`:""}<b>${esc(w[1])}</b></div>
+   <div class="hword">${shown.map(c=>`<span>${c==="_"?"":c}</span>`).join("")}</div>
+   <div class="kb">${"qwertyuiopasdfghjklzxcvbnm".split("").map(c=>`<button data-k="${c}" ${got.has(c)||(!word.includes(c)&&used.has(c))?"disabled":""} class="${got.has(c)?"hit":used.has(c)?"miss":""}">${c}</button>`).join("")}</div></div></div>`;
+  document.getElementById("quit").onclick=()=>{tab="games";show()};
+  app.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{const c=b.dataset.k;used.add(c);
+   if(word.includes(c)){got.add(c);SND.ok()}else{lives--;SND.bad()}
+   if(word.split("").every(x=>got.has(x))){speak(w[0]);return gameWin("hang",`La palabra era <b>${esc(w[0])}</b> (${esc(w[1])}).`,hang)}
+   if(lives<=0){speak(w[0]);return modal("¡Se acabaron los globos!",`La palabra era <b>${esc(w[0])}</b> (${esc(w[1])}).`,"PROBAR OTRA",hang,false,pico("sad"))}
+   draw()})};
+ const used=new Set();draw();
+}
+function memo(){
+ const ps=gamePool(6,12);const cards=shuf(ps.flatMap((p,i)=>[[i,p[0],"en"],[i,p[1],"es"]]));let open=[],done=new Set(),moves=0,lock=false;
+ const draw=()=>{app.innerHTML=`<div class="lesson">${gameHead("Memotest")}<div class="body"><p class="hint" style="text-align:center">Movimientos: <b>${moves}</b> · Parejas: <b>${done.size}</b>/6</p>
+  <div class="memo">${cards.map((c,k)=>{const up=open.includes(k)||done.has(c[0]);return `<button class="mc ${c[2]}${up?" up":""}${done.has(c[0])?" ok":""}" data-k="${k}"><span class="mf">?</span><span class="mb">${esc(c[1])}</span></button>`}).join("")}</div></div></div>`;
+  document.getElementById("quit").onclick=()=>{tab="games";show()};
+  app.querySelectorAll(".mc").forEach(b=>b.onclick=()=>{const k=+b.dataset.k,c=cards[k];if(lock||open.includes(k)||done.has(c[0]))return;
+   open.push(k);c[2]==="en"?speak(c[1]):speakEs(c[1]);draw();
+   if(open.length===2){moves++;const [a,b2]=open.map(x=>cards[x]);
+    if(a[0]===b2[0]){done.add(a[0]);open=[];SND.ok();setTimeout(()=>{if(done.size===6)return gameWin("memo",`Encontraste las 6 parejas en ${moves} movimientos.`,memo);draw()},350)}
+    else{lock=true;SND.bad();setTimeout(()=>{open=[];lock=false;draw()},900)}}})};
+ draw();
+}
+function soup(){
+ const N=9;let ws,grid,place=[];
+ for(let tries=0;tries<30;tries++){ws=gamePool(5,9);grid=Array.from({length:N},()=>Array(N).fill(""));place=[];let ok=true;
+  for(const w of ws){const word=w[0].toUpperCase();let put=false;
+   for(let t=0;t<150&&!put;t++){const d=rnd([[0,1],[1,0],[1,1]]),r=Math.floor(Math.random()*(N-(d[0]?word.length-1:0))),c=Math.floor(Math.random()*(N-(d[1]?word.length-1:0)));
+    if(r<0||c<0)continue;let fits=true;for(let i=0;i<word.length;i++){const g=grid[r+d[0]*i][c+d[1]*i];if(g&&g!==word[i]){fits=false;break}}
+    if(fits){for(let i=0;i<word.length;i++)grid[r+d[0]*i][c+d[1]*i]=word[i];place.push({w,r,c,d,len:word.length});put=true}}
+   if(!put){ok=false;break}}
+  if(ok)break}
+ const AB="ABCDEFGHIJKLMNOPRSTUVWY";for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(!grid[r][c])grid[r][c]=AB[Math.floor(Math.random()*AB.length)];
+ const found=new Set(),cellsFound=new Set();let start=null;
+ const draw=()=>{app.innerHTML=`<div class="lesson">${gameHead("Sopa de letras")}<div class="body"><p class="hint" style="text-align:center">Tocá la primera y la última letra de cada palabra.</p>
+  <div class="soup" style="grid-template-columns:repeat(${N},minmax(0,1fr))">${grid.map((row,r)=>row.map((ch,c)=>`<button class="sc${cellsFound.has(r+","+c)?" f":""}${start&&start[0]===r&&start[1]===c?" s":""}" data-r="${r}" data-c="${c}">${ch}</button>`).join("")).join("")}</div>
+  <div class="slist">${place.map((p,i)=>`<span class="${found.has(i)?"ok":""}">${EMO[p.w[0]]||""} ${found.has(i)?`<b>${esc(p.w[0])}</b>`:esc(p.w[1])}</span>`).join("")}</div></div></div>`;
+  document.getElementById("quit").onclick=()=>{tab="games";show()};
+  app.querySelectorAll(".sc").forEach(b=>b.onclick=()=>{const r=+b.dataset.r,c=+b.dataset.c;
+   if(!start){start=[r,c];SND.tap();return draw()}
+   const [r0,c0]=start;start=null;let hit=-1;
+   place.forEach((p,i)=>{if(found.has(i))return;const e=[p.r+p.d[0]*(p.len-1),p.c+p.d[1]*(p.len-1)];
+    if((p.r===r0&&p.c===c0&&e[0]===r&&e[1]===c)||(p.r===r&&p.c===c&&e[0]===r0&&e[1]===c0))hit=i});
+   if(hit>=0){const p=place[hit];found.add(hit);for(let i=0;i<p.len;i++)cellsFound.add((p.r+p.d[0]*i)+","+(p.c+p.d[1]*i));SND.ok();speak(p.w[0]);
+    if(found.size===place.length)return setTimeout(()=>gameWin("soup","Encontraste todas las palabras.",soup),500)}else SND.bad();
+   draw()})};
+ draw();
+}
+
+/* ================= COPIA DE SEGURIDAD ================= */
+function backupOut(){const code=btoa(unescape(encodeURIComponent(JSON.stringify(S))));
+ const m=document.createElement("div");m.className="modal";
+ m.innerHTML=`<div><h3>Tu código de respaldo</h3><p>Copialo y guardalo (por ejemplo, mandátelo por WhatsApp). Con este código recuperás todo tu progreso en otro celular.</p>
+  <textarea class="inp" id="bk" readonly style="min-height:120px;font-size:12px">${code}</textarea><button class="go" id="bkc">COPIAR</button><button class="go" id="mNo" style="background:var(--line);color:var(--ink);box-shadow:none;margin-top:10px">Cerrar</button></div>`;
+ document.body.appendChild(m);const ta=m.querySelector("#bk");
+ m.querySelector("#bkc").onclick=async()=>{ta.select();let ok=false;try{await navigator.clipboard.writeText(code);ok=true}catch(e){try{ok=document.execCommand("copy")}catch(e2){}}m.querySelector("#bkc").textContent=ok?"¡COPIADO!":"Mantené apretado el texto para copiarlo"};
+ m.querySelector("#mNo").onclick=()=>m.remove()}
+function backupIn(){const m=document.createElement("div");m.className="modal";
+ m.innerHTML=`<div><h3>Restaurar progreso</h3><p>Pegá acá tu código de respaldo. Ojo: reemplaza el progreso actual de este celular.</p><textarea class="inp" id="bk" style="min-height:120px;font-size:12px" placeholder="Pegá el código…"></textarea><p class="hint" id="bkerr"></p>
+  <button class="go" id="bkr">RESTAURAR</button><button class="go" id="mNo" style="background:var(--line);color:var(--ink);box-shadow:none;margin-top:10px">Cancelar</button></div>`;
+ document.body.appendChild(m);m.querySelector("#mNo").onclick=()=>m.remove();
+ m.querySelector("#bkr").onclick=()=>{try{const o=JSON.parse(decodeURIComponent(escape(atob(m.querySelector("#bk").value.trim()))));if(typeof o!=="object"||o.done===undefined)throw 0;
+  S=Object.assign(JSON.parse(JSON.stringify(DEF)),o);save();m.remove();applyTheme();tab="learn";show();modal("¡Listo!","Tu progreso se restauró.","Genial",null,false,pico("happy"))}
+  catch(e){m.querySelector("#bkerr").textContent="Ese código no es válido. Revisá que esté completo."}}}
+
 /* ================= LECCIÓN ================= */
 let L;
 function startTest(ui){const a=build(ui*NPU).filter(e=>e.k!=="speak"&&e.k!=="intro"),b=build(ui*NPU+3).filter(e=>e.k!=="speak"&&e.k!=="match"&&e.k!=="intro");
@@ -1285,14 +1523,14 @@ function render(){
   const stt=document.getElementById("stt"),mic=document.getElementById("mic");
   if(window.Android&&Android.listen){
    window.__onSpeechReady=()=>{mic.classList.add("rec");mic.querySelector("span").textContent="Escuchando… hablá ahora"};
-   window.__onSpeech=t=>{mic.classList.remove("rec");mic.querySelector("span").textContent="Tocá para hablar";stt.textContent=t?"Escuché: «"+t+"»":"No te escuché. Probá de nuevo.";if(t)set(t)};
+   window.__onSpeech=t=>{mic.classList.remove("rec");mic.querySelector("span").textContent="Tocá para hablar";if(t)stt.innerHTML=pron(e.say,t);else stt.textContent="No te escuché. Probá de nuevo.";if(t)set(t)};
    window.__onSpeechErr=m=>{mic.classList.remove("rec");mic.querySelector("span").textContent="Tocá para hablar";stt.textContent=m};
    mic.onclick=()=>{stt.textContent="";Android.listen()};
   }else
   mic.onclick=()=>{const R=window.SpeechRecognition||window.webkitSpeechRecognition;
    if(!R){stt.textContent="Este navegador no permite usar el micrófono acá. Tocá «No puedo hablar ahora».";return}
    try{const r=new R();r.lang="en-US";r.interimResults=false;mic.classList.add("rec");mic.querySelector("span").textContent="Escuchando…";
-    r.onresult=ev=>{const t=ev.results[0][0].transcript;stt.textContent="Escuché: «"+t+"»";set(t)};
+    r.onresult=ev=>{const t=ev.results[0][0].transcript;stt.innerHTML=pron(e.say,t);set(t)};
     r.onerror=()=>{stt.textContent="No pude usar el micrófono. Probá de nuevo o tocá «No puedo hablar ahora»."};
     r.onend=()=>{mic.classList.remove("rec");mic.querySelector("span").textContent="Tocá para hablar"};r.start()}
    catch(err){stt.textContent="No pude usar el micrófono acá. Tocá «No puedo hablar ahora»."}};
@@ -1346,9 +1584,16 @@ function render(){
   go.disabled=false;go.textContent="CONTINUAR";go.dataset.next=r?"1":"0";go.focus();
  };
 }
+/* puntaje de pronunciación palabra por palabra */
+function pronScore(target,heard){const a=norm(target).split(" "),b=norm(heard).split(" ");
+ const ok=a.map(w=>b.some(x=>x===w||(w.length>3&&lev(x,w)<=1)));return{a,ok,pct:Math.round(ok.filter(Boolean).length/a.length*100)}}
+function pron(target,heard){const r=pronScore(target,heard),orig=String(target).split(" ");
+ const msg=r.pct===100?"¡Pronunciación perfecta!":r.pct>=80?"¡Muy bien!":r.pct>=60?"¡Bien! Practicá las palabras en rojo.":"Probá de nuevo, más despacio.";
+ return `<div class="pron"><div class="pring" style="--p:${r.pct}"><b>${r.pct}%</b></div><div><b>${msg}</b><p>${orig.map((w,i)=>`<span class="${r.ok[i]?"pg":"pb"}" data-w="${esc(w)}">${esc(w)}</span>`).join(" ")}</p><small>Escuché: «${esc(heard)}»</small></div></div>`}
+document.addEventListener("click",ev=>{const w=ev.target.closest&&ev.target.closest(".pron [data-w]");if(w)speak(w.dataset.w,true)});
 function grade(e,v){
  if(e.k==="match")return true;
- if(e.k==="speak"){if(v==="__skip")return true;const a=norm(e.ans).split(" "),b=norm(v).split(" ");return a.filter(x=>b.includes(x)).length/a.length>=.6}
+ if(e.k==="speak"){if(v==="__skip")return true;return pronScore(e.ans,v).pct>=60}
  const a=norm(e.ans),b=norm(v);if(a===b)return true;
  if((e.k==="type"||e.k==="dict")&&a.length>3&&lev(a,b)<=Math.max(1,Math.floor(a.length/10)))return "typo";
  return false;
