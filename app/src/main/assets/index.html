@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="app-version" content="202611252030">
+<meta name="app-version" content="202611252230">
 <meta name="theme-color" content="#2a4fe0">
 <title>Hablá Inglés</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -422,6 +422,18 @@ body{background:var(--bg)}
 .mcard small{display:block;font-weight:800;font-size:12px;opacity:.9}.mcard b{display:block;font:600 19px Fredoka,sans-serif;margin:2px 0}
 .mcard .prog{background:rgba(255,255,255,.25);margin:6px 0 4px}.mcard .prog i{background:#ffe08a}
 .mbadge{width:56px;height:56px;border-radius:16px;background:rgba(255,255,255,.2);display:grid;place-items:center;flex:none}.mbadge svg{width:38px;height:38px}.mbadge.off svg{filter:grayscale(1);opacity:.6}
+
+.avme{position:relative;overflow:visible!important;background:none!important;border-radius:50%}.avme .face{border-radius:50%}
+.avpen{position:absolute;right:-4px;bottom:-2px;width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;font-style:normal;font-size:14px;display:grid;place-items:center;border:2px solid var(--surf)}
+.avbig{width:140px;height:140px;margin:6px auto 4px}.avbig .face{width:100%;height:100%}
+.avrow{display:flex;flex-wrap:wrap;gap:8px}.avo{border:2px solid var(--line);background:var(--surf);border-radius:10px;padding:8px 10px;font-weight:800;min-height:40px}.avo.on{border-color:var(--blue);color:var(--blue)}
+.cert{width:100%;max-width:420px;padding:10px;border-radius:22px;background:linear-gradient(135deg,#ffc531,#ff9f1c,#e5a100);box-shadow:0 14px 30px -12px rgba(0,0,0,.4)}
+.cin{position:relative;background:#fffdf5;color:#3d2900;border-radius:16px;padding:26px 20px 18px;border:2px dashed #e5a100;text-align:center}
+.cin small{font-weight:800;letter-spacing:.14em;font-size:12px;color:#a87500}.cin h3{font:700 28px Fredoka,sans-serif;margin:4px 0 10px;color:#2f5bea}
+.cin p{margin:4px 0;color:#5a3d00}.cname{display:block;font:700 30px Fredoka,sans-serif;margin:6px 0;color:#1b2240;border-bottom:2px solid #f0c64a;padding-bottom:4px}
+.cseal{position:absolute;top:-30px;right:-12px;width:78px;height:78px;border-radius:50%;background:#2f5bea;display:grid;place-items:center;box-shadow:0 4px 0 #1f3fb0;border:3px solid #fff}
+.cfoot{display:flex;justify-content:space-between;align-items:flex-end;margin-top:16px;font-weight:800;font-size:13px;color:#8a6a10}.csig{font:italic 700 24px Fredoka,sans-serif;color:#2f5bea;border-top:1px solid #c9a24a;padding-top:2px}
+.certb{border:2px solid var(--sun);background:var(--surf);border-radius:99px;padding:6px 14px;font-weight:800;min-height:40px}
 </style>
 </head>
 <body>
@@ -764,7 +776,7 @@ function confetti(){const cs=["#ffc531","#2f5bea","#ff5a5f","#1f9d55","#7fd3ff"]
 /* ================= LOGROS ================= */
 const ACH=[["first","Primer paso","Completá tu primera lección",1,()=>S.lessons,"#2f5bea"],["s3","En llamas","Llegá a una racha de 3 días",3,()=>S.streak,"#ff9f1c"],["s7","Imparable","Llegá a una racha de 7 días",7,()=>S.streak,"#ff5a5f"],
  ["perf","Perfeccionista","Terminá 3 lecciones sin errores",3,()=>S.perfect,"#1f9d55"],["xp","Sabio","Ganá 500 XP",500,()=>S.xp,"#8a5cf0"],["unit","Explorador","Terminá una unidad completa",1,()=>Math.floor(S.done/NPU),"#0f9bb0"],
- ["story","Cuentacuentos","Completá 3 historias",3,()=>S.stories,"#e0457b"],["chest","Coleccionista","Abrí 5 cofres",5,()=>S.chests,"#d98c35"],["combo","Racha perfecta","Acertá 10 seguidas en una lección",10,()=>S.bestCombo,"#e5a100"],["chal","Relámpago","Uní 15 pares en un desafío",15,()=>S.best,"#ffc531"],["talk","Conversador","Completá 3 charlas",3,()=>Object.keys(S.talk).length,"#8a5cf0"],["game","Jugador","Ganá 5 mini juegos",5,()=>S.games||0,"#ff5a5f"],["all","Políglota","Terminá el curso completo",TOTAL,()=>S.done,"#b5398f"]];
+ ["story","Cuentacuentos","Completá 3 historias",3,()=>S.stories,"#e0457b"],["chest","Coleccionista","Abrí 5 cofres",5,()=>S.chests,"#d98c35"],["combo","Racha perfecta","Acertá 10 seguidas en una lección",10,()=>S.bestCombo,"#e5a100"],["chal","Relámpago","Uní 15 pares en un desafío",15,()=>S.best,"#ffc531"],["talk","Conversador","Completá 3 charlas",3,()=>Object.keys(S.talk).length,"#8a5cf0"],["game","Jugador","Ganá 5 mini juegos",5,()=>S.games||0,"#ff5a5f"],["leg3","Leyenda viviente","Coroná 3 unidades en Leyenda",3,()=>Object.keys(S.legend||{}).length,"#7c3aed"],["s30","Racha de hierro","Llegá a una racha de 30 días",30,()=>S.streak,"#d93848"],["w100","Vocabulario","Aprendé 100 palabras",100,()=>known().length,"#0f9bb0"],["reader","Lector","Leé 5 historias largas",5,()=>Object.keys(S.lst||{}).length,"#0891b2"],["mara","Maratón","Estudiá 120 minutos",120,()=>S.mins||0,"#1f9d55"],["bil","Bilingüe","Empezá el curso de portugués",1,()=>(S.course==="pt"||(S.courses&&S.courses.pt))?1:0,"#16a34a"],["certa","Certificado","Conseguí tu primer certificado",1,()=>Object.keys(S.certs||{}).length,"#e5a100"],["champ","Campeón del mes","Cumplí un desafío del mes",1,()=>Object.keys(S.badges||{}).length,"#b5398f"],["all","Políglota","Terminá el curso completo",TOTAL,()=>S.done,"#b5398f"]];
 function checkAch(){const n=[];ACH.forEach(a=>{if(!S.ach.includes(a[0])&&a[4]()>=a[3]){S.ach.push(a[0]);n.push(a);S.gems+=20}});return n}
 
 /* ================= PANTALLAS ================= */
@@ -868,6 +880,7 @@ function learn(){
  });
  shell(h+`<p class="foot">Repetí lecciones completadas para ganar más XP.</p>`);
  requestAnimationFrame(drawTrails);
+ {const nc=checkCert();if(nc){checkAch();save();setTimeout(()=>certScreen(nc,true),400)}}
  app.querySelectorAll(".node").forEach(b=>b.onclick=()=>{
   const gi=+b.dataset.g,k=NODES[gi%NPU];if(gi>S.done)return;SND.tap();
   if(k==="chest"){if(gi===S.done)return openChest();return modal("Cofre abierto","Ya abriste este cofre. ¡Seguí avanzando para encontrar más!","OK")}
@@ -929,7 +942,7 @@ function league(){
  rows.forEach((r,i)=>{
   if(i===3)h+=`<div class="zone" style="background:var(--okBg);color:var(--ok)">▲ Zona de ascenso</div>`;
   if(i===8&&S.league>0)h+=`<div class="zone" style="background:var(--badBg);color:var(--bad)">▼ Zona de descenso</div>`;
-  h+=`<div class="row${r.me?" me":""}"><span class="rk">${i+1}</span><span class="av" style="background:${r.me?"var(--blue)":`hsl(${h32(r.n)%360} 60% 50%)`}">${esc(r.n[0].toUpperCase())}</span><span class="nm">${esc(r.n)}${r.me?" (vos)":""}</span><span class="xp">${r.xp} XP</span></div>`;
+  h+=`<div class="row${r.me?" me":""}"><span class="rk">${i+1}</span>${r.me?`<span class="av fav">${userFace()}</span>`:`<span class="av" style="background:hsl(${h32(r.n)%360} 60% 50%)">${esc(r.n[0].toUpperCase())}</span>`}<span class="nm">${esc(r.n)}${r.me?" (vos)":""}</span><span class="xp">${r.xp} XP</span></div>`;
  });
  shell(h+`<p class="foot">Liga simulada con jugadores de práctica (prototipo).</p></div>`);
 }
@@ -942,7 +955,7 @@ function profile(){
  const days=[];for(let i=6;i>=0;i--){const d=new Date(Date.now()-i*864e5);days.push([day(i),"DLMMJVS"[d.getDay()],S.hist[day(i)]||0])}
  const mx=Math.max(S.goal,...days.map(d=>d[2]));
  const G=[[10,"Casual"],[20,"Normal"],[30,"En serio"],[50,"Intenso"]];
- let h=`<div class="page"><div style="display:flex;gap:14px;align-items:center;margin-bottom:16px"><span class="av" style="width:64px;height:64px;font-size:28px;background:var(--blue)">${esc((S.name||"V")[0].toUpperCase())}</span>
+ let h=`<div class="page"><div style="display:flex;gap:14px;align-items:center;margin-bottom:16px"><button class="av avme" id="aved" style="width:72px;height:72px;padding:0;border:0" aria-label="Editar avatar">${userFace()}<i class="avpen">✎</i></button>
   <div><h2 style="margin:0">${esc(S.name||"Vos")}</h2><p class="sub" style="margin:0">Aprendiendo inglés · Liga ${LEAGUES[S.league][0]}</p></div></div>
   <div class="stats"><div>${I.fire}<b>${S.streak}</b><small>días de racha</small></div><div>${I.star}<b>${S.xp}</b><small>XP total</small></div><div>${I.book}<b>${S.lessons}</b><small>lecciones</small></div><div>${I.medal}<b>${S.ach.length}</b><small>logros</small></div><div>${I.bolt}<b>${S.mins}</b><small>minutos estudiados</small></div><div>${I.spk}<b>${known().length}</b><small>palabras aprendidas</small></div></div>
   <h2 style="font-size:22px;margin-top:24px">Tu racha este mes</h2>${calendar()}
@@ -954,6 +967,7 @@ function profile(){
   <div class="goals" style="margin-top:6px">${[["auto","Automática"],["facil","Fácil"],["normal","Normal"],["dificil","Difícil"]].map(d=>`<button class="tile${S.diff===d[0]?" on":""}" data-diff="${d[0]}">${d[1]}</button>`).join("")}</div>
   <p class="sub" style="font-size:14px;margin-top:8px">En automática, Pico sube la dificultad si acertás mucho y la baja si te cuesta. En difícil hay más escritura, dictados y frases para traducir al español.</p>
   <button class="ghost" id="plc" style="margin-top:4px">Hacer prueba de nivel</button>
+  ${Object.keys(S.certs||{}).length?`<h2 style="font-size:22px;margin-top:24px">Certificados</h2><div class="slist" style="justify-content:flex-start">${Object.keys(S.certs).map(k=>`<button class="certb" data-cert="${k}">${k.startsWith("pt")?"🇧🇷":"🇺🇸"} ${k.split("-")[1]}</button>`).join("")}</div>`:""}
   <h2 style="font-size:22px;margin-top:24px">Esta semana</h2><div class="week">${days.map(d=>`<div><span class="v">${d[2]}</span><span class="b"><i style="height:${d[2]/mx*100}%;background:${d[2]>=S.goal?"var(--sun)":"var(--blue)"}"></i></span><small>${d[1]}</small></div>`).join("")}</div>
   <p class="sub" style="font-size:14px">Amarillo: días en que cumpliste tu meta de ${S.goal} XP.</p>
   <h2 style="font-size:22px;margin-top:24px">Meta diaria</h2><div class="goals">${G.map(g=>`<button class="tile${S.goal===g[0]?" on":""}" data-g="${g[0]}">${g[1]} · ${g[0]} XP</button>`).join("")}</div>
@@ -977,6 +991,8 @@ function profile(){
  app.querySelectorAll("[data-rem]").forEach(b=>b.onclick=()=>{const h=+b.dataset.rem;S.rem=h?{on:1,h}:{on:0,h:S.rem.h};save();try{Android.setReminder(!!h,S.rem.h,0)}catch(e){}SND.tap();const y=scrollY;profile();scrollTo(0,y)});
  document.getElementById("bko").onclick=backupOut;document.getElementById("bki").onclick=backupIn;
  app.querySelectorAll("[data-big]").forEach(b=>b.onclick=()=>{S.big=+b.dataset.big;save();applyTheme();const y=scrollY;profile();scrollTo(0,y)});
+ document.getElementById("aved").onclick=()=>{SND.tap();avatarEditor()};
+ app.querySelectorAll("[data-cert]").forEach(b=>b.onclick=()=>certScreen(b.dataset.cert,false));
  app.querySelectorAll("[data-diff]").forEach(b=>b.onclick=()=>{S.diff=b.dataset.diff;save();SND.tap();profile()});
  const ck=document.getElementById("updchk");if(ck)ck.onclick=()=>{try{Android.checkNow()}catch(e){}ck.textContent="Buscando…";setTimeout(()=>{if(!document.getElementById("upd"))ck.textContent="Ya tenés la última versión"},6000)};
  document.getElementById("plc").onclick=()=>modal("¿Hacer la prueba de nivel?","Son hasta 16 preguntas que se ponen cada vez más difíciles. Termina cuando te equivocás 3 veces. No gastás vidas y nunca te bloquea lo que ya desbloqueaste.","EMPEZAR",startPlace,true,pico(""));
@@ -1179,7 +1195,37 @@ const UPT=[
  w:[["cozinha","cocina","🍳"],["quarto","dormitorio","🛏️"],["banheiro","baño","🛁"],["janela","ventana","🪟"],["porta","puerta","🚪"],["mesa","mesa"],["cadeira","silla","🪑"],["cama","cama","😴"],["jardim","jardín","🌷"],["chão","piso"]],
  f:[["a cozinha é grande","La cocina es grande"],["abra a janela","Abrí la ventana"],["o gato está na cama","El gato está en la cama"],["feche a porta por favor","Cerrá la puerta, por favor"],["minha casa tem um jardim","Mi casa tiene un jardín"],["a cadeira está quebrada","La silla está rota"]],
  st:{p:["Mãe","Sam"],l:[["Sam, onde você está?","Sam, ¿dónde estás?"],["Estou na cozinha.","Estoy en la cocina."],["Por favor, arrume o seu quarto.","Por favor, ordená tu dormitorio."],["Tá bom, mãe!","¡Bueno, mamá!"]],
-  q:[["¿Dónde está Sam?","Na cozinha",["Na cozinha","No jardim","No banheiro","No quarto"]],["¿Qué tiene que ordenar?","O quarto dele",["O quarto dele","A cozinha","O carro","A janela"]]]}}
+  q:[["¿Dónde está Sam?","Na cozinha",["Na cozinha","No jardim","No banheiro","No quarto"]],["¿Qué tiene que ordenar?","O quarto dele",["O quarto dele","A cozinha","O carro","A janela"]]]}},
+{n:"Trabalho e escola",sub:"En la oficina y en clase",c:"#d4573b",d:"#9c3a23",
+ w:[["professor","profesor","🧑‍🏫"],["aluno","alumno","🧑‍🎓"],["livro","libro","📚"],["escritório","oficina","🏢"],["chefe","jefe","👔"],["computador","computadora","💻"],["reunião","reunión","🤝"],["lição de casa","tarea","📝"],["estudar","estudiar","✏️"],["trabalho","trabajo","💼"]],
+ f:[["eu sou aluno","Soy alumno"],["o professor é legal","El profesor es buena onda"],["eu tenho uma reunião hoje","Tengo una reunión hoy"],["meu chefe está ocupado","Mi jefe está ocupado"],["eu estudo português","Estudio portugués"],["o livro está na mesa","El libro está sobre la mesa"]],
+ st:{p:["Chefe","Eva"],l:[["Você tem o relatório?","¿Tenés el informe?"],["Sim, está no seu computador.","Sí, está en tu computadora."],["Ótimo! A reunião é às dez.","¡Genial! La reunión es a las diez."],["Perfeito, até lá.","Perfecto, nos vemos ahí."]],
+  q:[["¿Dónde está el informe?","No computador",["No computador","Na mesa","No livro","Em casa"]],["¿A qué hora es la reunión?","Às dez",["Às dez","Às duas","Às seis","Ao meio-dia"]]]}},
+{n:"Saúde",sub:"Cómo te sentís",c:"#0f86d8",d:"#0a5f9c",
+ w:[["cabeça","cabeza","👤"],["mão","mano","✋"],["olho","ojo","👁️"],["perna","pierna","🦵"],["coração","corazón","❤️"],["médico","médico","🧑‍⚕️"],["remédio","remedio","💊"],["doente","enfermo","🤒"],["cansado","cansado","🥱"],["dor","dolor","🤕"]],
+ f:[["minha cabeça dói","Me duele la cabeza"],["estou muito cansado","Estoy muy cansado"],["eu preciso de um médico","Necesito un médico"],["ela está doente hoje","Ella está enferma hoy"],["tome este remédio","Tomá este remedio"],["lave as mãos","Lavate las manos"]],
+ st:{p:["Médico","Max"],l:[["Como você está se sentindo?","¿Cómo te sentís?"],["Estou mal, minha cabeça dói.","Estoy mal, me duele la cabeza."],["Tome este remédio e descanse.","Tomá este remedio y descansá."],["Obrigado, doutor.","Gracias, doctor."]],
+  q:[["¿Qué le duele a Max?","A cabeça",["A cabeça","A perna","A mão","O olho"]],["¿Qué tiene que hacer?","Tomar remédio e descansar",["Tomar remédio e descansar","Correr","Trabalhar","Comer pizza"]]]}},
+{n:"Compras",sub:"Precios, pagos y tiendas",c:"#0d9488",d:"#0a6b62",
+ w:[["dinheiro","dinero","💵"],["preço","precio","🏷️"],["barato","barato"],["caro","caro","💎"],["loja","tienda","🏪"],["promoção","oferta","🔖"],["cartão","tarjeta","💳"],["troco","vuelto","🪙"],["sacola","bolsa","👜"],["quanto","cuánto","❓"]],
+ f:[["quanto custa","¿Cuánto cuesta?"],["esta camisa é barata","Esta camisa es barata"],["os sapatos são caros","Los zapatos son caros"],["posso pagar com cartão","¿Puedo pagar con tarjeta?"],["eu preciso de uma sacola","Necesito una bolsa"],["a loja está aberta","La tienda está abierta"]],
+ st:{p:["Vendedora","Lisa"],l:[["Posso ajudar?","¿Te puedo ayudar?"],["Quanto custa esta jaqueta?","¿Cuánto cuesta esta campera?"],["Custa cem reais.","Cuesta cien reales."],["Ótimo, vou pagar com cartão.","Genial, voy a pagar con tarjeta."]],
+  q:[["¿Qué quiere comprar Lisa?","Uma jaqueta",["Uma jaqueta","Uma sacola","Sapatos","Um chapéu"]],["¿Cómo paga?","Com cartão",["Com cartão","Em dinheiro","Com cheque","Não paga"]]]}},
+{n:"O tempo",sub:"Sol, lluvia y estaciones",c:"#3b82f6",d:"#2559b0",
+ w:[["tempo","clima","🌦️"],["sol","sol","☀️"],["chuva","lluvia","🌧️"],["frio","frío","🥶"],["calor","calor","🥵"],["vento","viento","💨"],["nublado","nublado","☁️"],["verão","verano","🌞"],["inverno","invierno","⛄"],["neve","nieve","❄️"]],
+ f:[["hoje está muito calor","Hoy hace mucho calor"],["está chovendo","Está lloviendo"],["eu gosto do inverno","Me gusta el invierno"],["o verão é quente","El verano es caluroso"],["o sol saiu","Salió el sol"],["está nublado e com vento","Está nublado y hay viento"]],
+ st:{p:["Dan","Eva"],l:[["Como está o tempo?","¿Cómo está el clima?"],["Está frio e chovendo.","Hace frío y está lloviendo."],["Leve um guarda-chuva!","¡Llevá un paraguas!"],["Boa ideia, obrigada.","Buena idea, gracias."]],
+  q:[["¿Cómo está el clima?","Frio e chovendo",["Frio e chovendo","Calor e sol","Com neve","Com vento"]],["¿Qué tiene que llevar?","Um guarda-chuva",["Um guarda-chuva","Um chapéu","Uma jaqueta","Óculos de sol"]]]}},
+{n:"Emoções",sub:"Cómo te sentís hoy",c:"#db2777",d:"#9d1752",
+ w:[["feliz","feliz","😀"],["triste","triste","😢"],["bravo","enojado","😠"],["com medo","asustado","😨"],["entediado","aburrido","😑"],["animado","entusiasmado","🤩"],["preocupado","preocupado","😟"],["calmo","tranquilo","😌"],["amor","amor","💕"],["sorriso","sonrisa","😊"]],
+ f:[["eu estou muito feliz","Estoy muy feliz"],["por que você está triste","¿Por qué estás triste?"],["ela está brava comigo","Ella está enojada conmigo"],["estou um pouco preocupado","Estoy un poco preocupado"],["nós estamos animados","Estamos entusiasmados"],["fique calmo","Quedate tranquilo"]],
+ st:{p:["Ana","Ben"],l:[["Você parece triste. Está tudo bem?","Te ves triste. ¿Está todo bien?"],["Estou preocupado com minha prova.","Estoy preocupado por mi examen."],["Não se preocupe, você estudou muito.","No te preocupes, estudiaste mucho."],["Obrigado, agora estou melhor.","Gracias, ahora estoy mejor."]],
+  q:[["¿Por qué está preocupado Ben?","A prova",["A prova","O cachorro","O trabalho","O tempo"]],["¿Cómo se siente al final?","Melhor",["Melhor","Pior","Bravo","Entediado"]]]}},
+{n:"No restaurante",sub:"Pedir, comer y pagar",c:"#be123c",d:"#8a0d2b",
+ w:[["cardápio","menú","📋"],["garçom","mozo","🤵"],["conta","cuenta","🧾"],["pedir","pedir"],["sobremesa","postre","🍰"],["sopa","sopa","🍲"],["salada","ensalada","🥗"],["carne","carne","🥩"],["garfo","tenedor","🍴"],["copo","vaso","🥛"]],
+ f:[["posso ver o cardápio","¿Puedo ver el menú?"],["a conta por favor","La cuenta, por favor"],["eu queria uma salada","Quería una ensalada"],["a sopa está quente","La sopa está caliente"],["nós queremos sobremesa","Queremos postre"],["eu preciso de um garfo","Necesito un tenedor"]],
+ st:{p:["Garçom","Eva"],l:[["Vocês já querem pedir?","¿Ya quieren pedir?"],["Sim, eu queria a sopa e uma salada.","Sí, quería la sopa y una ensalada."],["E para beber?","¿Y para tomar?"],["Um copo de água, por favor.","Un vaso de agua, por favor."]],
+  q:[["¿Qué pide Eva para comer?","Sopa e salada",["Sopa e salada","Carne","Sobremesa","Pizza"]],["¿Qué toma?","Água",["Água","Suco","Café","Leite"]]]}}
 ];
 const TIPSPT=[
  ["Un varón dice «obrigado» y una mujer dice «obrigada». «Oi» es un hola más informal que «olá».",["Oi, tudo bem?","Tudo bem!"]],
@@ -1189,13 +1235,19 @@ const TIPSPT=[
  ["Los colores cambian según el género: vermelho / vermelha, preto / preta. «Eu gosto de…» = me gusta…",["Eu gosto do azul","Camisa vermelha"]],
  ["Los días de semana se dicen segunda-feira (lunes), terça-feira (martes)… «Que horas são?» = ¿qué hora es?",["Até amanhã","São duas horas"]],
  ["«Tomar banho» = bañarse y «café da manhã» = desayuno. Para hábitos: «eu sempre…», «eu nunca…».",["Eu sempre leio","Eu acordo cedo"]],
- ["«em + o» se junta y queda «no» (no quarto = en el dormitorio). «em + a» queda «na» (na cozinha).",["Estou na cozinha","O gato está no quarto"]]
+ ["«em + o» se junta y queda «no» (no quarto = en el dormitorio). «em + a» queda «na» (na cozinha).",["Estou na cozinha","O gato está no quarto"]],
+ ["«Sou» = soy (ser) y «estou» = estoy (estar), como en español. En Brasil «legal» significa «buena onda» o «genial».",["Eu sou aluno","Que legal!"]],
+ ["«Minha cabeça dói» = me duele la cabeza. «Remédio» es remedio o medicamento. Decí «cansado» o «cansada» según seas varón o mujer.",["Estou cansado","Minha perna dói"]],
+ ["«Quanto custa?» = ¿cuánto cuesta? En Brasil la moneda es el real (en plural, reais). «Troco» es el vuelto.",["Quanto custa?","Posso pagar com cartão?"]],
+ ["Para el clima se usa «está»: está frio, está chovendo. También se dice «faz calor» (hace calor).",["Está chovendo","Faz calor"]],
+ ["¡Ojo! «Bravo» en portugués significa enojado, no valiente. «Com medo» = con miedo.",["Estou feliz","Ela está brava"]],
+ ["«Eu queria…» (quería) es la forma educada de pedir. El menú es el «cardápio» y el mozo, el «garçom».",["Eu queria um suco","A conta, por favor"]]
 ];
-const UEPT=["👋","🍞","👨‍👩‍👧","🚆","👕","⏰","🌅","🏡"];
+const UEPT=["👋","🍞","👨‍👩‍👧","🚆","👕","⏰","🌅","🏡","🏫","🩺","🛍️","🌦️","😊","🍽️"];
 const HP={eu:"yo",voce:"vos / tú",meu:"mi",minha:"mi",e:"es / y",o:"el",a:"la",os:"los",as:"las",um:"un",uma:"una",com:"con",de:"de",em:"en",na:"en la",no:"en el",tem:"tiene",tenho:"tengo",esta:"está",estou:"estoy",nao:"no",sim:"sí",muito:"mucho",quero:"quiero",gosto:"me gusta",do:"del",da:"de la",ela:"ella",ele:"él",nos:"nosotros",sao:"son",que:"qué",onde:"dónde",fica:"queda",sou:"soy",bom:"bueno",boa:"buena",aqui:"aquí",mas:"pero",seu:"tu",sua:"tu",prazer:"gusto",oi:"hola",ai:"ay",corre:"corré",aula:"clase",horas:"horas",as_:"a las",faz:"hacés",manha:"mañana",todos:"todos",dias:"días",antes:"antes",seis:"seis",siga:"siga",frente:"adelante",vire:"doblá",perto:"cerca",longe:"lejos",licenca:"permiso",estacao:"estación",mais:"más",alguma:"alguna",coisa:"cosa",nova:"nueva",escuro:"oscuro",ou:"o",preta:"negra",bebo:"bebo",como:"como",gelado:"frío",preciso:"necesito",linda:"linda",abra:"abrí",feche:"cerrá",arrume:"ordená",quebrada:"rota",ta:"está",ate:"hasta",sete:"siete",le:"lee",noite:"noche",tomo:"tomo",trabalhamos:"trabajamos",acordo:"me despierto",irmaos:"hermanos",dela:"de ella",dele:"de él",usa:"usa",grande:"grande",pequena:"pequeña",professor:"profesor",conhecer:"conocer",obrigado:"gracias"};
 const HEPT={mi:"meu / minha",el:"o",la:"a",los:"os",un:"um",una:"uma",y:"e",con:"com",de:"de",en:"em",es:"é",esta:"está",tengo:"tenho",tiene:"tem",quiero:"quero",yo:"eu",me:"me",gusta:"gosto",hola:"olá",gracias:"obrigado",muchas:"muito",necesito:"preciso",donde:"onde",queda:"fica",que:"que",hora:"hora",hoy:"hoje",hasta:"até",nos:"nos",vemos:"vemos",siempre:"sempre",nunca:"nunca",tu:"seu / sua",ella:"ela",negros:"pretos",roja:"vermelha"};
 UPT.forEach(u=>u.w.forEach(([pt,es,em])=>{if(em)EMO[pt]=em;if(!pt.includes(" "))HP[norm(pt)]=HP[norm(pt)]||es;if(!es.includes(" "))HEPT[norm(es)]=HEPT[norm(es)]||pt}));
-HIGH.push("Mãe");
+HIGH.push("Mãe","Vendedora");
 const TIPSEN=TIPS,UEEN=UE;
 const PT=()=>S.course==="pt",TL=()=>PT()?"pt":"en",LNAME=()=>PT()?"portugués":"inglés";
 function applyCourse(){const pt=PT();U=pt?UPT:UEN;TIPS=pt?TIPSPT:TIPSEN;UE=pt?UEPT:UEEN;TOTAL=U.length*NPU;ALLW=U.flatMap(u=>u.w)}
@@ -1203,7 +1255,7 @@ const CK=["done","str","weak","weakF","seen","legend","rh","lst","talk","placed"
 function setCourse(c){if(c===(S.course||"en"))return;S.courses=S.courses||{};const cur={};CK.forEach(k=>cur[k]=S[k]);S.courses[S.course||"en"]=cur;
  const nx=S.courses[c]||{};CK.forEach(k=>{S[k]=nx[k]!==undefined?nx[k]:(DEF[k]!==undefined?JSON.parse(JSON.stringify(DEF[k])):undefined)});S.course=c;applyCourse();save();tab="learn";show()}
 function courseModal(){const m=document.createElement("div");m.className="modal";
- m.innerHTML=`<div><h3>¿Qué querés aprender?</h3><div class="opts" style="margin-top:10px">${[["en","🇺🇸","Inglés","30 unidades · A1 a B2"],["pt","🇧🇷","Portugués","8 unidades · A1 (¡nuevo!)"]].map(c=>`<button class="opt crs${(S.course||"en")===c[0]?" sel":""}" data-c="${c[0]}"><span style="font-size:30px">${c[1]}</span><span style="flex:1;text-align:start"><b>${c[2]}</b><br><small style="color:var(--mute)">${c[3]}</small></span></button>`).join("")}</div>
+ m.innerHTML=`<div><h3>¿Qué querés aprender?</h3><div class="opts" style="margin-top:10px">${[["en","🇺🇸","Inglés","30 unidades · A1 a B2"],["pt","🇧🇷","Portugués","14 unidades · A1 y A2"]].map(c=>`<button class="opt crs${(S.course||"en")===c[0]?" sel":""}" data-c="${c[0]}"><span style="font-size:30px">${c[1]}</span><span style="flex:1;text-align:start"><b>${c[2]}</b><br><small style="color:var(--mute)">${c[3]}</small></span></button>`).join("")}</div>
   <p class="sub" style="font-size:13px;margin-top:10px">Cada curso guarda su propio avance. Tu racha, XP y gemas son las mismas.</p><button class="go" id="mNo" style="background:var(--line);color:var(--ink);box-shadow:none">Cerrar</button></div>`;
  document.body.appendChild(m);m.querySelector("#mNo").onclick=()=>m.remove();
  m.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{m.remove();SND.tap();setCourse(b.dataset.c)})}
@@ -1392,7 +1444,7 @@ function startTalk(c){
   tops.innerHTML=`<p class="hint" style="margin:14px 0 8px">Elegí tu respuesta:</p><div class="opts">${shuf(s[2].map((o,i)=>[o,i])).map(([o,i])=>`<button class="opt" data-i="${i}">${esc(fill(o[0]))}</button>`).join("")}</div><div id="tip"></div>`;
   tops.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const o=s[2][+b.dataset.i];
    if(o[1]){SND.ok();speak(fill(o[0]));tops.innerHTML="";
-    tk.insertAdjacentHTML("beforeend",`<div class="line r"><span class="av" style="background:var(--blue)">${esc(nm[0].toUpperCase())}</span><div class="tbub me"><span>${esc(fill(o[0]))}</span></div></div>`);
+    tk.insertAdjacentHTML("beforeend",`<div class="line r"><span class="av fav">${userFace()}</span><div class="tbub me"><span>${esc(fill(o[0]))}</span></div></div>`);
     step++;document.getElementById("tb").style.width=step/c.steps.length*100+"%";
     if(step>=c.steps.length)setTimeout(endTalk,900);else setTimeout(npc,900)}
    else{SND.bad();miss++;b.classList.add("bad");b.disabled=true;
@@ -1661,6 +1713,35 @@ function monthCard(){const m=new Date().getMonth(),v=S.mkey===mkey()?(S.mxp||0):
  const left=new Date(new Date().getFullYear(),m+1,0).getDate()-new Date().getDate();
  return `<div class="mcard"><span class="mbadge${done?"":" off"}">${I.crown}</span><div style="flex:1"><small>DESAFÍO DE ${MONTHS[m].toUpperCase()}</small><b>Ganá ${MGOAL} XP este mes</b>
   <div class="prog"><i style="width:${Math.min(100,v/MGOAL*100)}%"></i></div><small>${done?"¡Insignia conseguida!":`${v} / ${MGOAL} XP · quedan ${left} día${left===1?"":"s"}`}</small></div></div>`}
+
+/* ================= AVATAR Y CERTIFICADOS ================= */
+const AVO={skin:["#f5d5b8","#f2c9a0","#e0a878","#c68a5e","#8d5a3b"],hair:["Corto","Largo","Rulos","Rapado","Colita"],hc:["#2b1a0e","#6b3a17","#d9a441","#b33a2a","#1b2240","#c9cfe3"],shirt:["#2f5bea","#ff5a5f","#1f9d55","#8a5cf0","#ff9f1c","#1b2240"],acc:["Nada","Anteojos","Gorra","Moño","Auriculares"]};
+function userFace(a){a=Object.assign({skin:1,hair:0,hc:0,shirt:0,acc:0},a||S.av||{});const sk=AVO.skin[a.skin],hc=AVO.hc[a.hc],sh=AVO.shirt[a.shirt];
+ const back={1:`<path d="M8 22q0-16 12-16t12 16v13H8z" fill="${hc}"/>`,4:`<circle cx="31" cy="13" r="5" fill="${hc}"/>`}[a.hair]||"";
+ const top=[`<path d="M9 19q2-11 11-11t11 11q-5-5-11-5t-11 5z" fill="${hc}"/>`,`<path d="M9 20q1-12 11-12t11 12q-4-6-11-6t-11 6z" fill="${hc}"/>`,
+  `<g fill="${hc}">${[[11,15],[15,11],[20,10],[25,11],[29,15],[10,20],[30,20]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="4.2"/>`).join("")}</g>`,`<path d="M10 17q2-8 10-8t10 8q-5-3-10-3t-10 3z" fill="${hc}" opacity=".45"/>`,`<path d="M9 19q2-11 11-11t11 11q-5-5-11-5t-11 5z" fill="${hc}"/>`][a.hair];
+ const acc=["",`<g fill="none" stroke="#1b2240" stroke-width="1.5"><circle cx="16" cy="23" r="3.4"/><circle cx="24" cy="23" r="3.4"/><path d="M19.4 23h1.2"/></g>`,`<path d="M8.5 16q1-9 11.5-9t11.5 9z" fill="#ff5a5f"/><path d="M28 15.5q6 0 8 3h-9z" fill="#d93848"/>`,
+  `<g transform="translate(28 11) rotate(20)"><path d="M0 0l-5-3.5v7zM0 0l5-3.5v7z" fill="#ff5a5f"/><circle r="1.6" fill="#d93848"/></g>`,`<path d="M8 23q0-15 12-15t12 15" fill="none" stroke="#1b2240" stroke-width="2.4"/><rect x="6" y="20" width="4.5" height="7" rx="2" fill="#ff5a5f"/><rect x="29.5" y="20" width="4.5" height="7" rx="2" fill="#ff5a5f"/>`][a.acc];
+ return `<svg class="face" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="color-mix(in srgb,${sh} 22%,#fff)"/>${back}<path d="M6 40q2-9 14-9t14 9z" fill="${sh}"/><rect x="17" y="28" width="6" height="5" fill="${sk}"/><circle cx="20" cy="21" r="10.5" fill="${sk}"/>${top}
+  <circle cx="16" cy="23" r="1.5" fill="#2b1a0e"/><circle cx="24" cy="23" r="1.5" fill="#2b1a0e"/><path d="M16.5 27q3.5 2.6 7 0" stroke="#2b1a0e" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="13.5" cy="26" r="1.7" fill="#ff8a8a" opacity=".5"/><circle cx="26.5" cy="26" r="1.7" fill="#ff8a8a" opacity=".5"/>${acc}</svg>`}
+function avatarEditor(){const a=Object.assign({skin:1,hair:0,hc:0,shirt:0,acc:0},S.av||{});const m=document.createElement("div");m.className="modal";
+ const draw=()=>{m.innerHTML=`<div style="max-height:90vh;overflow:auto"><h3>Tu avatar</h3><div class="avbig">${userFace(a)}</div>
+  ${[["skin","Piel"],["hair","Peinado"],["hc","Color de pelo"],["shirt","Remera"],["acc","Accesorio"]].map(([k,l])=>`<p class="lab" style="text-align:start;margin:12px 0 6px">${l}</p><div class="avrow">${AVO[k].map((v,i)=>k==="hair"||k==="acc"?`<button class="avo${a[k]===i?" on":""}" data-k="${k}" data-i="${i}">${v}</button>`:`<button class="swc${a[k]===i?" on":""}" data-k="${k}" data-i="${i}" style="background:${v}" aria-label="${l} ${i+1}"></button>`).join("")}</div>`).join("")}
+  <button class="go" id="avok" style="margin-top:16px">GUARDAR</button></div>`;
+  m.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{a[b.dataset.k]=+b.dataset.i;SND.tap();draw()});
+  m.querySelector("#avok").onclick=()=>{S.av=a;save();m.remove();profile()}};
+ document.body.appendChild(m);draw()}
+const CERTS={en:[[5,"A1","Principiante"],[12,"A2","Básico"],[20,"B1","Intermedio"],[30,"B2","Intermedio alto"]],pt:[[8,"A1","Principiante"],[14,"A2","Básico"]]};
+function checkCert(){const c=S.course||"en";S.certs=S.certs||{};let nw=null;
+ CERTS[c].forEach(([u,l,n])=>{const k=c+"-"+l;if(S.done>=u*NPU&&!S.certs[k]){S.certs[k]=new Date().toLocaleDateString("es-AR",{day:"numeric",month:"long",year:"numeric"});nw=k}});if(nw)save();return nw}
+function certScreen(k,fresh){const [c,l]=k.split("-"),info=CERTS[c].find(x=>x[1]===l),lang=c==="pt"?"Portugués":"Inglés";
+ if(fresh){SND.win();confetti()}
+ app.innerHTML=`<div class="lesson"><div class="end"><div class="cert"><div class="cin"><span class="cseal">${pico("happy").replace('class="pico"','class="pico" style="width:70px"')}</span>
+  <small>CERTIFICADO DE NIVEL</small><h3>${l} · ${info[2]}</h3><p>Hablá Inglés certifica que</p><b class="cname">${esc(S.name||"Estudiante")}</b>
+  <p>completó el nivel <b>${l}</b> del curso de <b>${lang}</b>.</p><div class="cfoot"><span>${esc(S.certs[k])}</span><span class="csig">Pico</span></div></div></div>
+  ${fresh?`<p class="sub" style="margin-top:12px">¡Felicitaciones! Sacale una captura de pantalla para compartirlo.</p>`:""}
+  <button class="go" id="h" style="max-width:320px;margin-top:8px">${fresh?"¡GENIAL!":"VOLVER"}</button></div></div>`;
+ document.getElementById("h").onclick=()=>{tab=fresh?"learn":"profile";show()}}
 
 /* ================= LECCIÓN ================= */
 let L;
